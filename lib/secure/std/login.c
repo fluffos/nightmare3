@@ -100,7 +100,7 @@ protected void input_email(string str) {
     write_file(CFG_GROUPS, tmp);
     destruct(master());
     if(ob = find_object(OB_LOGIN)) destruct(ob);
-    rename("/secure/std/login.real", "/secure/std/login.c");
+    cp("/secure/std/login.real", "/secure/std/login.c");
     destruct(__Admin);
     receive("You will be disconnected.  Login as your admin character.\n");
     destruct(master());

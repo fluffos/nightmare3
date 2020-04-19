@@ -19,12 +19,12 @@ protected void logon();
 protected void get_name(string str);
 string query_name();
 protected void get_password(string str);
-protected private int locked_access();
-protected private int check_password(string str);
-protected private int valid_site(string ip);
-protected private int boot_copy();
+protected int locked_access();
+protected int check_password(string str);
+protected int valid_site(string ip);
+protected int boot_copy();
 protected void disconnect_copy(string str);
-protected private void exec_user();
+protected void exec_user();
 protected void new_user(string str);
 protected void choose_password(string str);
 protected void confirm_password(string str2, string str1);
@@ -35,7 +35,7 @@ protected void enter_email(string str);
 protected void enter_real_name(string str);
 protected void idle();
 protected void receive_message(string cl, string msg);
-protected private void internal_remove();
+protected void internal_remove();
 void remove();
 
 void create() {
@@ -144,7 +144,7 @@ protected void get_password(string str) {
     else boot_copy();
   }
 
-protected private int locked_access() {
+protected int locked_access() {
     int i;
 
     if((int)BANISH_D->is_guest(__Name)) return 1;
@@ -153,14 +153,14 @@ protected private int locked_access() {
     return 0;
   }
 
-protected private int check_password(string str) {
+protected int check_password(string str) {
     string pass;
 
     if((pass = (string)__Player->query_password()) != crypt(str, pass)) return 0;
     return valid_site(query_ip_number());
   }
 
-protected private int valid_site(string ip) {
+protected int valid_site(string ip) {
     string a, b;
     string *miens;
     int i;
@@ -173,7 +173,7 @@ protected private int valid_site(string ip) {
     return 0;
   }
 
-protected private int boot_copy() {
+protected int boot_copy() {
     if(interactive(__Player)) {
         message("system", "\nThere currently exists an interactive copy of you.\n",
           this_object());
@@ -206,7 +206,7 @@ protected void disconnect_copy(string str) {
     internal_remove();
   }
 
-protected private void exec_user() {
+protected void exec_user() {
     if(MULTI_D->query_prevent_login(__Name)) {
         internal_remove();
         return;
@@ -331,7 +331,7 @@ void receive_message(string cl, string msg) {
     else receive(msg);
   }
 
-protected private void internal_remove() {
+protected void internal_remove() {
     if(__Player && !__CopyExists) destruct(__Player);
     destruct(this_object());
 }
