@@ -486,14 +486,14 @@ nomask  private  string replace_null(string str) {
     else return str;
 }
 
-nomask  private  private void add_history_cmd(string str) {
+nomask  protected void add_history_cmd(string str) {
     __History[__HistoryTop = (++__CmdNumber-1) % __HistorySize] = str;
     if(__CmdNumber < __HistorySize) __HistoryBottom = 0;
     else if(!__HistoryTop) __HistoryBottom = __HistorySize - 1;
     else __HistoryBottom = __HistoryTop + 1;
 }
 
-nomask  private  string replace_nickname(string str) {
+nomask  protected  string replace_nickname(string str) {
     if(str == "") return str;
     if(str[0] == '\\') return str[1..(strlen(str)-1)];
     else if(__Nicknames[str]) return __Nicknames[str];

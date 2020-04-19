@@ -10,19 +10,19 @@ void set_refs( mapping a ) { refs = ( mapp( a ) ? a : ([]) ); }
 
 mapping get_refs() { return ( refs ? copy(refs) : ([]) ); }
 
-void set_ref( string ref, mixed value )
+void set_ref( string refv, mixed value )
 {
   if( !refs ) refs = ([]);
-  if( !ref ) ref = "default";
+  if( !refv ) refv = "default";
   if( undefinedp( value ) )
-    map_delete( refs, ref );
+    map_delete( refs, refv );
   else
-    refs[ref] = value;
+    refs[refv] = value;
 }
 
-mixed get_ref( string ref )
+mixed get_ref( string refv )
 {
   if( !refs ) refs = ([]);
-  if( !ref ) ref = "default";
-  return refs[ref];
+  if( !refv ) refv = "default";
+  return refs[refv];
 }

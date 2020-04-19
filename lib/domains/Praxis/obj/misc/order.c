@@ -13,7 +13,7 @@ inherit OBJECT;
 int __Light, __Indoors;
 string __Short, __Long, __Exit, __NewRoom;
 
-protected private string create_file();
+private string create_file();
 
 void create() {
     Object::create();
@@ -143,7 +143,7 @@ protected void input_exit(string str) {
     this_object()->remove();
 }
 
-protected private string create_file() {
+private string create_file() {
     string dir, str;
     int x;
 

@@ -46,7 +46,7 @@ int hide_something(string str) {
     if(this_player()->query_paralyzed())
       return notify_fail("You cannot move.\n");
     if(!str) return notify_fail("Hide what?\n");
-    if(effective_light(this_player()) < -1) 
+    if(effective_light(this_player()) < -1)
       return notify_fail("It is too dark.\n");
     if(effective_light(this_player()) > 8)
       return notify_fail("It is too bright to do that.\n");
@@ -111,7 +111,7 @@ int search_room(string str) {
     return 1;
 }
 
-status smell_things(string str) {
+int smell_things(string str) {
     if(!str || str == "") str = "default";
     if(!__Smells || !__Smells[str]) {
         if(!this_object()->id(str))
@@ -133,7 +133,7 @@ status smell_things(string str) {
     return 1;
 }
 
-status do_listen(string str) {
+int do_listen(string str) {
     if(!str || str == "") str = "default";
     else if(sscanf(str, "to %s", str) != 1)
       return notify_fail("Listen to what?\n");
@@ -211,7 +211,7 @@ void set_listen(mixed item, mixed desc) {
 
 void remove_listen(string item) { map_delete(__Listens, item); }
 
-mixed query_search(string item) { 
+mixed query_search(string item) {
     if(functionp(__Searches[item])) return copy(__Searches[item]);
     else return __Searches[item];
 }

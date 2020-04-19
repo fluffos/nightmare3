@@ -151,7 +151,7 @@ void socket_preload() {
 
 int valid_write(string file, object ob, string fun) {
     string *ok;
-
+    if(fun == "save_object") return 1;
     if(ob == master()) return 1;
     if(file[0] != '/') file = "/"+file;
     if(!(ok = match_path(__WriteAccess, file))) ok = 0;

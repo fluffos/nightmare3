@@ -149,7 +149,7 @@ void done_edit(mixed *unused) {
     this_object()->remove();
 }
 
-protected private string create_file() {
+private string create_file() {
     string dir, str;
     int x;
 
