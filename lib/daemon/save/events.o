@@ -1,0 +1,3 @@
+#secure/daemon/events.c
+__RebootInterval 24
+__Events (["/secure/daemon/events":(["args":({}),"function":"change_sky","time":787384840,"regular":0,]),])

@@ -1,0 +1,73 @@
+			 Nightmare Mudlib 3.3
+		     for the MudOS Driver v20.23
+		      Released 13 December 1994
+
+/* NOTE: 950118
+   I have included the options.h from my compile now.  This is the
+   options.h you should use compiling your driver.  Only change
+   the config file dir define.
+ */
+
+The Nightmare Mudlib 3.3 is designed to be released with a beta driver
+from MudOS.  This is an unusual occurrence, as I prefer to release
+with MudOS fill releases.  Nightmare and MudOS have gone through so
+many changes, and with a pending release of Nightmare IV, I decided to
+go ahead and release Nightmare 3.3.  The only driver with which this
+is tested and proven is MudOS v20.23.  Do not use anything else until
+you understand what upgrading a driver involves.
+
+The Nightmare Mudlib 3.3 can be found in the sub-directory called
+mudlib.  In addition to the mudlib, this packages comes with a
+configuration script to help configure the mudlib for your system.
+This script is a perl script, and it requires that perl is installed
+on your system in order to run it.  If perl is not installed on your
+system, you can still install the mudlib easily, just not as easily
+:).
+
+COMPILING MUDOS
+Nightmare 3.3 uses options unused by previous instances of the
+Nightmare Mudlib or by other mudlibs.  Therefore you should look at
+the options.h file included with the mudlib before compiling the
+driver and editing your own version of options.h.  Do not use our
+actual copy, as it is only a sample which may be out of date.  Just
+use it as a guide for filling in information.
+
+INSTALLATION
+If perl is installed on your system:
+
+1) Check to see that line 1 of Configure points to the actual location
+of perl on your system.  On some systems it might be in /bin/perl or
+/usr/bin/perl.
+
+2) Type ./Configure.
+
+3) Answer the questions it asks.
+
+4) Once the mud starts, go to step 4 of the no-perl instructions.
+
+If perl is not installed on your system:
+
+1) Compile the MudOS Driver v20.23.  If it did not come with your
+package, then you can get it from actlab.rtf.utexas.edu.  Refer to the
+documentation with the driver on information about compiling it. 
+
+2) The driver will have produced a file called "driver".  You should
+be able simply to type make install after making it so that the driver
+file is moved to its final resting place.  If not, then move it there
+yourself.
+
+3) Copy Config.NM33 to your config file directory.  You specified this
+when you edited options.h before compiling the driver.  Edit it,
+giving it values that relate specifically to you and your MUD.
+
+4) Type: "driver Config.NM33 &" at the UNIX command line.  You will
+get a bunch of messages.  Ignore them so long as after about 30
+seconds you see the message "connected to port whatever" or something
+like that, where whatever is the port on which you want your mud.
+
+5) Telnet to that port.  You will be asked several questions about
+your character.  Your character will be made an admin.  Once the
+questions are done, YOU WILL BE DISCONNECTED.  Telnet again.  When you
+reconnect, you will get a normal login screen.  Login, and you are
+set.
+
