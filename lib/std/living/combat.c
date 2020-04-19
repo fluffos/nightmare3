@@ -21,14 +21,14 @@
 inherit BODY;
 inherit SKILLS;
 
-static int paralyzed, magic_round;
-static int hunting;
+nosave int paralyzed, magic_round;
+nosave int hunting;
 int wimpy;
 private string wimpydir;
-private static object *attackers;
+private nosave object *attackers;
 private  nosave int any_attack;
 private  nosave int casting;
-private static object *hunters;
+private nosave object *hunters;
 private  nosave mapping magic_protection;
 private  nosave string paralyze_message;
 

@@ -21,7 +21,7 @@ int cmd_chfn(string arg) {
     return 1;
 }
 
-static void
+protected void
 new_name(string rname) {
     if( rname && strlen( rname ) > 0 ) {
 	this_player()->set_rname(rname);
@@ -31,7 +31,7 @@ new_name(string rname) {
     input_to("new_email");
 }
 
-static void
+protected void
 new_email(string e) {
     if( e && strlen( e ) > 0 ) {
 	this_player()->set_email(e);

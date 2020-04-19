@@ -8,7 +8,7 @@
 
 string str_class;
 mapping skills;
-static mapping skill_bonus;
+nosave mapping skill_bonus;
 
 void init_skills(string cl);
 void add_skill_points(string skill, int amount);
@@ -26,7 +26,7 @@ void init_skills(string cl) {
 
 void add_skill_points(string skill, int amount) {
     int x, max, borg, lvl;
- 
+
     if(!skills[skill]) return;
     if(amount<1) return;
     x = skills[skill]["points"];
@@ -112,7 +112,7 @@ void set_class(string str) { str_class = str; }
 
 string query_class() { return str_class; }
 
-static void reduce_skills() {
+protected  void reduce_skills() {
     string *ind;
     int x;
     int i;

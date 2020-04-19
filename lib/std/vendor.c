@@ -17,13 +17,13 @@ inherit MONSTER;
 private mapping __Eco, __Values, __Costs, __Discriminate;
 private string *__ItemTypes;
 
-static int __CheckDiscrimination();
-static int __SellAll();
-static int convert(int x);
+protected  int __CheckDiscrimination();
+protected  int __SellAll();
+protected  int convert(int x);
 string *query_item_types();
-static int cost_bargaining(object who, int x);
-static int value_bargaining(object who, int x);
-static int __AlreadyThere(object ob);
+protected  int cost_bargaining(object who, int x);
+protected  int value_bargaining(object who, int x);
+protected  int __AlreadyThere(object ob);
 
 void init() {
   ::init();
@@ -56,7 +56,7 @@ int __Buy(string str) {
     this_object()->force_me("speak Buy what?");
     return 1;
   }
-  if(!(ob = present(str, __Eco["storage object"])) && 
+  if(!(ob = present(str, __Eco["storage object"])) &&
      !(ob = parse_objects(__Eco["storage object"]))) {
     this_object()->force_me("speak I have nothing like that to sell.");
     return 1;
@@ -90,7 +90,7 @@ int __Buy(string str) {
   if(ob->move(this_player())) {
     message("my_action", "You drop it as fast as you get it!", this_player());
     message("other_action", (string)this_player()->query_cap_name()+
-	    " drops "+(string)ob->query_short()+".", 
+	    " drops "+(string)ob->query_short()+".",
 	    environment(this_object()), ({ this_player() }));
     ob->move(environment(this_object()));
   }
@@ -101,7 +101,7 @@ int __Sell(string str) {
   object ob;
   string tmp;
   int worth, val, x;
-  
+
   if(!(x = __CheckDiscrimination())) return 1;
   if(!str) {
     this_object()->force_me("speak Sell what?");
@@ -122,7 +122,7 @@ int __Sell(string str) {
   if(member_array((string)ob->query_vendor_type(), query_item_types()) == -1) {
     /* the following code is to allow for the selling of items
        with the "magic item" property */
-    if(!(ob->query_property("magic item") && 
+    if(!(ob->query_property("magic item") &&
 	 member_array("magic", query_item_types()) != -1)) {
       this_object()->force_me(sprintf("speak I do not buy %s goods.",
 				      (string)ob->query_vendor_type()));
@@ -192,13 +192,13 @@ int __List(string str) {
   object *inv;
   string *tmp;
   int i, x;
-  
+
   if(!__CheckDiscrimination()) return 1;
   if(!__Eco["storage object"]) {
     this_object()->force_me("speak I have nothing to sell right now.");
     return 1;
   }
-  i = sizeof(inv = filter_array(all_inventory(__Eco["storage object"]), 
+  i = sizeof(inv = filter_array(all_inventory(__Eco["storage object"]),
 				"filter_list", this_object(), str));
   if(!i) {
     this_object()->force_me("speak I have nothing like that to sell.");
@@ -220,7 +220,7 @@ int __Value(string str) {
   object ob;
   string tmp, cn;
   int worth, val;
-  
+
   if(!__CheckDiscrimination()) return 1;
   if(!str) {
     this_object()->force_me("speak The value of what?");
@@ -233,7 +233,7 @@ int __Value(string str) {
     }
   }
   message("other_action", (cn=(string)this_player()->query_cap_name())+
-	  " asks for an appraisal.", environment(this_object()), 
+	  " asks for an appraisal.", environment(this_object()),
 	  ({this_object(),this_player()}));
   if(__Values[tmp=(string)this_player()->query_name()] &&
      __Values[tmp][ob]) {
@@ -262,7 +262,7 @@ int __Cost(string str) {
   object ob;
   string cn, tmp;
   int val, worth;
-  
+
   if(!__Eco["storage object"])
     __Eco["storage object"] = load_object(__Eco["storage file"]);
   if(!__CheckDiscrimination()) return 1;
@@ -276,7 +276,7 @@ int __Cost(string str) {
     return 1;
   }
   message("other_action", (cn=(string)this_player()->query_cap_name())+
-	  "asks about the cost of an item for sale.", 
+	  "asks about the cost of an item for sale.",
 	  environment(this_object()), ({ this_object(), this_player() }));
   if(__Costs[tmp = (string)this_player()->query_name()] && __Costs[tmp][ob]) {
     this_object()->force_me("speak I will charge no less!");
@@ -309,11 +309,11 @@ int filter_list(object ob, string str) {
              // i would have to say so... ;)
 }
 
-static int __SellAll() {
+protected  int __SellAll() {
   object *inv;
   int i, worth, val, total;
   string tmp;
-  
+
   total = 0;
   if(!(i = sizeof(inv = all_inventory(this_player())))) {
     this_object()->force_me("speak You have nothing to sell!");
@@ -325,10 +325,10 @@ static int __SellAll() {
 			      " is worthless.");
       continue;
     }
-    if(member_array((string)inv[i]->query_vendor_type(), 
+    if(member_array((string)inv[i]->query_vendor_type(),
 		    query_item_types()) == -1) {
       this_object()->force_me(sprintf("speak %s is a %s item, and "
-				      "I do not buy those.", 
+				      "I do not buy those.",
 				      (string)inv[i]->query_short(),
 				      (string)inv[i]->query_vendor_type()));
       continue;
@@ -341,7 +341,7 @@ static int __SellAll() {
     message("my_action", "You sell "+(string)inv[i]->query_short()+".",
 	    this_player());
     message("other_action", (string)this_player()->query_cap_name()+
-	    " sells "+(string)inv[i]->query_short()+".", 
+	    " sells "+(string)inv[i]->query_short()+".",
 	    environment(this_object()), ({ this_player() }));
     if(inv[i]->query_destroy()) inv[i]->remove();
     else if(__AlreadyThere(inv[i])) inv[i]->remove();
@@ -349,15 +349,15 @@ static int __SellAll() {
   }
   if(total)
     this_object()->force_me(sprintf("speak Your total comes to %d %s.",
-				    total, __Eco["currency"]));  
+				    total, __Eco["currency"]));
   /* Kalinash 1-14-94 */
   this_object()->force_me("speak Thank you for your business!");
   return 1;
 }
 
-static int cost_bargaining(object who, int x) {
+protected  int cost_bargaining(object who, int x) {
   int val, vend, pl, cha;
-  
+
   pl = (int)who->query_skill("bargaining");
   cha = (int)who->query_stats("bargaining");
   val = (2*x) + ((x*10)/100) + ((query_skill("bargaining")-cha)*x)/200;
@@ -365,45 +365,45 @@ static int cost_bargaining(object who, int x) {
   return val;
 }
 
-static int value_bargaining(object who, int x) {
+protected  int value_bargaining(object who, int x) {
   int val, pl, cha;
-  
+
   pl = (int)who->query_skill("bargaining");
   cha = (int)who->query_stats("charisma");
   val = x + ((pl*x)/200) - ((query_skill("bargaining")-cha)*x)/200;
   return val;
 }
 
-static int __AlreadyThere(object ob) {
+protected  int __AlreadyThere(object ob) {
   object *inv;
   int i;
-  
+
   if(!(i = sizeof(inv = all_inventory(__Eco["storage object"])))) return 0;
-  while(i--) 
+  while(i--)
     if((string)inv[i]->query_short() == (string)ob->query_short()) return 1;
   return 0;
 }
 
-static int __CheckDiscrimination() {
+protected  int __CheckDiscrimination() {
   int x, tmp, i;
   string *dis;
 
   if(__Discriminate["class"] &&
-     member_array((string)this_player()->query_class(), 
+     member_array((string)this_player()->query_class(),
 		  __Discriminate["class"]) == -1) {
     this_object()->force_me("speak I do not do business with people "
 			    "like you.");
     return 0;
   }
-  if(__Discriminate["race"] && 
-     member_array((string)this_player()->query_class(), 
+  if(__Discriminate["race"] &&
+     member_array((string)this_player()->query_class(),
 		  __Discriminate["race"]) == -1) {
     this_object()->force_me("speak I do not do business with people "
 			    "like you.");
     return 0;
   }
   if(__Discriminate["language"] && i = sizeof(__Discriminate["language"])) {
-    while(i--) 
+    while(i--)
       if(x < (tmp = (int)this_player()->query_lang_prof
 	      (__Discriminate["language"][i]))) x = tmp;
     if(!x) {
@@ -415,7 +415,7 @@ static int __CheckDiscrimination() {
   return 10;
 }
 
-static int convert(int x) {
+protected  int convert(int x) {
   if(!x) return 0;
   return 1 + to_int(x * __Eco["exchange rate"]);
 }
@@ -427,11 +427,11 @@ varargs void set_currency(string str, float wert) {
   __Eco["exchange rate"] =currency_rate(str);
 }
 
-void set_discriminate(string who, string *which) { 
-  __Discriminate[who] = which; 
+void set_discriminate(string who, string *which) {
+  __Discriminate[who] = which;
 }
-  
-void set_storage_room(string str) { 
+
+void set_storage_room(string str) {
   __Eco["storage object"] =load_object(__Eco["storage file"] = str);
 }
 

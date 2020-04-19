@@ -29,7 +29,7 @@ inherit REFS;
 inherit LIVING;
 
 
-static string *__IgnoreMsgClass;
+nosave string *__IgnoreMsgClass;
 #define DEATH_MSGS ({\
 sprintf("A cold wind sweeps across %s, grieving the loss of %s.", mud_name(), query_cap_name()),\
 sprintf("You hear the faint howl of %s death from far away.", possessive_noun(query_cap_name())),\
@@ -44,14 +44,14 @@ int player_age;
 int __NoQuit;
 int level, ghost, rolls, verbose_moves;
 int birth;
-static int disable, time_of_login;
-static int __LogHarass;
-static mixed *__MessageCue;
-static string __Client;
-static int __LastAged;
+nosave int disable, time_of_login;
+nosave int __LogHarass;
+nosave mixed *__MessageCue;
+nosave string __Client;
+nosave int __LastAged;
 mapping blocked, news;
-static mapping __LastError;
-static	status	snoop, earmuffs;
+nosave mapping __LastError;
+nosave	status	snoop, earmuffs;
 string	char_name, real_name, email, ip, last_on, password, race, original_site;
 private string position, primary_start, *__RestrictedChannels;
 private int __WhereBlock;
@@ -61,12 +61,12 @@ string *quests;
 string *mysites;
 string guild;
 string	*message;
-static string *__UserId;
+nosave string *__UserId;
 string married;
 mixed *current_marriage, *divorced;
-static string net_died_here;
-static mapping term_info;
-static object died_here;
+nosave string net_died_here;
+nosave mapping term_info;
+nosave object died_here;
 
 int query_where_block();
 int set_where_block();
@@ -78,7 +78,7 @@ int query_log_harass();
 void reset_terminal();
 mapping get_mini_quest_map();
 string *query_quests();
-private static register_channels();
+private protected  register_channels();
 string *query_mysites();
 void set_mysites(string *str);
 void set_guild(string str);
@@ -856,7 +856,7 @@ void unrestrict_channel(string str) {
 
 nomask string *query_channels() { return channels - __RestrictedChannels; }
 
-static private register_channels() {
+ private register_channels() {
     if(creatorp(this_object()))
 	channels = ({ "cleric","fighter","kataan","mage","monk","rogue"});
     else channels = (query_class() ? ({ query_class() }) : ({}));

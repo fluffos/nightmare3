@@ -2,11 +2,11 @@
 
 inherit OBJECT;
 
-static private string __Short, __Long, __File;
-static private mapping __Actions, __Items, __Smells, __Listens, __Objects;
-static private void main_menu();
-static void primary_prompt();
-static private string describe_long();
+nosave private string __Short, __Long, __File;
+nosave private mapping __Actions, __Items, __Smells, __Listens, __Objects;
+private void main_menu();
+proteceted void primary_prompt();
+private string describe_long();
 
 void create() {
     Object::create();
@@ -27,7 +27,7 @@ void create() {
     __Listens = ([]);
     __Objects = ([]);
 }
-    
+
 void create_room(string str) {
     string file;
 
@@ -42,9 +42,9 @@ void create_room(string str) {
     input_to("main_cmd");
   }
 
-static void primary_prompt() { message("prompt","\nCommand: ",this_player()); }
+protected void primary_prompt() { message("prompt","\nCommand: ",this_player()); }
 
-static private void main_menu() {
+ private void main_menu() {
     message("info", "\n%^INITTERM%^The Nightmare Mudlib Room Creator "
       "\t\tDescartes of Borg 1993", this_player());
     message("info", sprintf("\n%s", center(sprintf("File name: %s", __File))),
@@ -52,7 +52,7 @@ static private void main_menu() {
     if(__Short) message("info", sprintf("\n\n%%^BOLD%%^Short:%%^RESET%%^ "
       "%s", __Short), this_player());
     else message("info","\n\n%^BOLD%^No short description set.",this_player());
-    if(__Long) message("info", sprintf("\n\nLong:\n%s", 
+    if(__Long) message("info", sprintf("\n\nLong:\n%s",
       describe_long()), this_player());
     else message("info", "\n\n%^BOLD%^No long description set.",this_player());
     message("info", "\n\n\t\tedit: L)ong description, S)hort description",
@@ -61,7 +61,7 @@ static private void main_menu() {
       "s)mells", this_player());
 }
 
-static private string describe_long() {
+ private string describe_long() {
     string *items;
     string ret;
     int i, j, x;
@@ -74,7 +74,7 @@ static private string describe_long() {
             "%%^RESET%%^", items[i]));
         else if(pointerp(items[i])) {
             j = sizeof(items[i]);
-            while(j--) 
+            while(j--)
               if((x = strsrch(__Long, items[i][j])) != -1)
                 ret = replace_string(ret, items[i][j],
                   sprintf("%%^BOLD%%^GREEN%%^%s%%^RESET%%^", items[i][j]));
@@ -83,12 +83,12 @@ static private string describe_long() {
     return ret;
 }
 
-static void main_cmd(string str) {
+protected void main_cmd(string str) {
     string *tmp;
     string args;
 
     if(str == "" || !str) {
-        message("info", "\n%^RED%^Invalid room creator command.", 
+        message("info", "\n%^RED%^Invalid room creator command.",
           this_player());
         primary_prompt();
         input_to("main_cmd");
@@ -109,7 +109,7 @@ static void main_cmd(string str) {
     }
 }
 
-static private void edit_long() {
+ private void edit_long() {
     if(__Long) write_file("/tmp/"+(string)this_player()->query_name()+
       ".RoomCreator", wrap(__Long, 75));
     message("info", "\n%^INITTERM%^Long description for: "+__File,

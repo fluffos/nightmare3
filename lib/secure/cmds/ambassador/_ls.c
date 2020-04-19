@@ -8,11 +8,11 @@
 
 inherit DAEMON;
 
-static private mapping file_mapping(string *files);
-static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
+private mapping file_mapping(string *files);
+private string display_ls(mixed targ, int aflag, int lflag, int tflag,
   int nflag, int bflag, int sflag);
-static private string long_list(string dir, mixed *files);
-static private string short_list(string dir, mixed *files, int n, int s);
+private string long_list(string dir, mixed *files);
+private string short_list(string dir, mixed *files, int n, int s);
 
 int cmd_ls(string str) {
     string *args, *paths, *options, *files, *tmp, *dirs;
@@ -47,7 +47,7 @@ int cmd_ls(string str) {
     }
     for(i=0, maxi = sizeof(paths), files = ({}); i<maxi; i++)
       if(tmp = (string *)previous_object()->wild_card(paths[i])) files += tmp;
-    if(!sizeof(files)) { 
+    if(!sizeof(files)) {
         message("error", "No such file or directory.", this_player());
         return 1;
     }
@@ -62,16 +62,16 @@ int cmd_ls(string str) {
         return 1;
     }
     for(i=0; i<maxi; i++)
-      show += display_ls(dirs[i], all_files, long_details, time_sort, 
+      show += display_ls(dirs[i], all_files, long_details, time_sort,
         no_load_info, brief, size);
     if(moref) previous_object()->more(explode(show, "\n"), "system");
     else message("system", show, previous_object());
     return 1;
 }
 
-static int is_dir(string str) { return (file_size(str) == -2); }
+protected int is_dir(string str) { return (file_size(str) == -2); }
 
-static private mapping file_mapping(string *files) {
+private mapping file_mapping(string *files) {
     mapping borg;
     string *tmp;
     string dir;
@@ -87,7 +87,7 @@ static private mapping file_mapping(string *files) {
     return borg;
 }
 
-static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
+private string display_ls(mixed targ, int aflag, int lflag, int tflag,
   int nflag, int bflag, int sflag) {
     string *cles;
     string ret;
@@ -99,7 +99,7 @@ static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
         if(!bflag) ret = cles[i]+":\n";
         if(!aflag) targ[cles[i]] = filter_array(targ[cles[i]], "filter_dots",
           this_object());
-        if(tflag) 
+        if(tflag)
           targ[cles[i]]=sort_array(targ[cles[i]],"time_sort",this_object());
         if(lflag) ret += long_list(cles[i], targ[cles[i]]);
         else ret += short_list(cles[i], targ[cles[i]], nflag, sflag);
@@ -108,15 +108,15 @@ static private string display_ls(mixed targ, int aflag, int lflag, int tflag,
     return ret;
 }
 
-static int filter_dots(mixed *file) { return (file[0][0] != '.'); }
+protected  int filter_dots(mixed *file) { return (file[0][0] != '.'); }
 
-static int time_sort(mixed *alpha, mixed *beta) {
+protected  int time_sort(mixed *alpha, mixed *beta) {
     if(alpha[2] < beta[2]) return 1;
     else if(alpha[2] > beta[2]) return -1;
     else return 0;
 }
 
-static private string long_list(string dir, mixed *files) {
+private string long_list(string dir, mixed *files) {
     string ret, acc, loaded;
     int i, maxi;
 
@@ -132,7 +132,7 @@ static private string long_list(string dir, mixed *files) {
     for(i=0, maxi=sizeof(files); i<maxi; i++) {
         if(files[i][1] == -2) loaded = "";
         else loaded = (find_object(dir+files[i][0]) ? "*" : "");
-        ret += sprintf("%:-3s%:-5s%:-30s%:-10d%s", 
+        ret += sprintf("%:-3s%:-5s%:-30s%:-10d%s",
           loaded, acc, ctime(files[i][2]),
           files[i][1], files[i][0]);
         if(files[i][1] == -2) ret += "/\n";
@@ -141,7 +141,7 @@ static private string long_list(string dir, mixed *files) {
     return ret;
 }
 
-static private string short_list(string dir, mixed *files, int n, int s) {
+private string short_list(string dir, mixed *files, int n, int s) {
     string *newfiles;
     string ret, tmp;
     int i, j, max, x, long, ind, cols, rows;
@@ -167,7 +167,7 @@ static private string short_list(string dir, mixed *files, int n, int s) {
     return ret;
 }
 
-static string map_files(mixed *file, int *flags) {
+protected  string map_files(mixed *file, int *flags) {
     string tmp;
     mixed tmp2 = flags[0]+file[0];
 
@@ -211,6 +211,6 @@ void help() {
       "    Access permissions, in the form of rwx\n"
       "    Time last modified\n"
       "    Size of the file\n"
-      "    File name\n\nSee also: cd, mkdir, mv, pwd, rm, rmdir", 
+      "    File name\n\nSee also: cd, mkdir, mv, pwd, rm, rmdir",
       this_player());
 }

@@ -14,7 +14,7 @@
 #define MSG_NOBLOCK  (1 << 0)                 /* no blocking */
 
 
-static private string *local_chans = ({"newbie","cre","gossip","admin","error",
+nosave private string *local_chans = ({"newbie","cre","gossip","admin","error",
   "priest", "mage", "explorer", "thief", "fighter", "death" });
 
 
@@ -64,7 +64,7 @@ void eventReceiveChannelUserRequest(mixed *packet) {
     case "female": gender = 1; break;
     default: gender = 2; break;
     }
-    INTERMUD_D->eventWrite( ({ "chan-user-reply", 5, mud_name(), 0, 
+    INTERMUD_D->eventWrite( ({ "chan-user-reply", 5, mud_name(), 0,
 	packet[2], 0, packet[6], visname, gender }));
 }
 
@@ -131,7 +131,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 	else packet = ({ "channel-e", 5, mud_name(), convert_name(who), 0, 0,
 	      ch, who, msg });
     }
-    else packet = ({ "channel-m", 5, mud_name(), convert_name(who), 0, 0, ch, 
+    else packet = ({ "channel-m", 5, mud_name(), convert_name(who), 0, 0, ch,
 	  who, msg });
     if(member_array(ch, local_chans) == -1){
 	INTERMUD_D->eventWrite(packet);
@@ -154,10 +154,10 @@ void eventRegisterChannels(mapping list) {
     ns = (string)INTERMUD_D->GetNameserver();
     foreach(channel, val in list) {
 	if( !val ) continue;
-	if( channel == (string)CHAT_D->GetLocalChannel(channel) && 
+	if( channel == (string)CHAT_D->GetLocalChannel(channel) &&
 	  channel != "dead_test4" && channel != "dead_souls" &&
 	  channel != "lpuni" && channel != "german" ) {
-	    INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns, 
+	    INTERMUD_D->eventWrite(({ "channel-listen", 5, mud_name(), 0, ns,
 		0, channel, 0 }));
 	    log_file("channels", "New channel: " + channel + " recognized " +
 	      ctime(time()) + "\nValue: " + identify(val) + "\n\n");
@@ -184,13 +184,13 @@ int eventAdministerChannel(string channel, string *additions,
 
 int AddChannel(string channel, int privee) {
 
-    if( !((int)master()->valid_apply( ({}) )) ){ 
+    if( !((int)master()->valid_apply( ({}) )) ){
 	return 0;
     }
     if( member_array(channel, INTERMUD_D->GetChannels()) != -1 ){
 	return 0;
     }
-    INTERMUD_D->eventWrite(({ "channel-add", 5, mud_name(), 
+    INTERMUD_D->eventWrite(({ "channel-add", 5, mud_name(),
 	(string)this_player(1)->GetKeyName(),
 	(string)INTERMUD_D->GetNameserver(), 0,
 	channel, privee }));

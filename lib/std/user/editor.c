@@ -8,10 +8,10 @@
 #include "editor.h"
 
 #define EDITOR_HELP DIR_USER_HELP + "/editor"
-static private int __Time;
-static private string __FileName;
-static private function __Callback, __Abort;
-static private mixed __Arguments;
+nosave private int __Time;
+nosave private string __FileName;
+nosave private function __Callback, __Abort;
+nosave private mixed __Arguments;
 
 void create() {
     clear_editor();

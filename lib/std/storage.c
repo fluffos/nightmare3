@@ -11,7 +11,7 @@ inherit CONTAINER;
 
 private int __CanClose, __CanLock;
 private string __Key;
-static private int __Closed, __Locked;
+nosave private int __Closed, __Locked;
 
 void init() {
     ::init();
@@ -29,13 +29,13 @@ void create() {
     __Closed = 0;
 }
 
-static int Put(string str) {
+protected  int Put(string str) {
     object ob;
     string what, where;
     int tmp;
 
     if(!str) return 0;
-    if(effective_light(this_player()) < -1) 
+    if(effective_light(this_player()) < -1)
       return notify_fail("It is too dark.\n");
     if(sscanf(lower_case(str), "%s in %s", what, where) != 2) return 0;
     if(present(where, environment(this_player())) != this_object() &&
@@ -49,13 +49,13 @@ static int Put(string str) {
     if(!((int)ob->allow_put(this_player()))) return 1;
     if(!((int)ob->allow_drop(this_player()))) return 1;
     if(tmp = (int)ob->move(this_object())) {
-        if(query_closed()) 
+        if(query_closed())
           message("my_action", sprintf("The %s is closed.", query_name()),
             this_player());
         else message("my_action", "You cannot fit it in there.",this_player());
         return 1;
     }
-    message("my_action", sprintf("You put %s into %s.", 
+    message("my_action", sprintf("You put %s into %s.",
       (string)ob->query_short(), query_short()), this_player());
     message("other_action", sprintf("%s puts %s into %s.",
       (string)this_player()->query_cap_name(), (string)ob->query_short(),
@@ -63,7 +63,7 @@ static int Put(string str) {
     return 1;
 }
 
-static int Get(string str) { 
+protected  int Get(string str) {
     object *things;
     object ob;
     string what, where;
@@ -86,7 +86,7 @@ static int Get(string str) {
         things = ({ ob });
     }
     if(query_closed()) {
-        message("my_action", sprintf("%s is closed.", 
+        message("my_action", sprintf("%s is closed.",
           capitalize(query_short())), this_player());
         return 1;
     }
@@ -94,13 +94,13 @@ static int Get(string str) {
         if(!((int)things[i]->allow_get(this_player()))) continue;
         message("my_action", sprintf("You get %s from %s.",
           (string)things[i]->query_short(), query_short()), this_player());
-        message("other_action", sprintf("%s gets %s from %s.", 
+        message("other_action", sprintf("%s gets %s from %s.",
           (string)this_player()->query_cap_name(), (string)things[i]->query_short(),
           query_short()), environment(this_player()), ({this_player()}));
         if((int)things[i]->move(this_player())) {
             message("my_action", "You cannot carry that!", this_player());
             things[i]->move(environment(this_player()));
-            message("other_action", sprintf("%s drops %s.", 
+            message("other_action", sprintf("%s drops %s.",
               (string)this_player()->query_cap_name(), (string)things[i]->query_short()),
               environment(this_player()), ({ this_player() }));
         }
@@ -108,7 +108,7 @@ static int Get(string str) {
     return 1;
 }
 
-static int Open(string str) {
+protected  int Open(string str) {
     if(!str) return 0;
     if(!query_can_close()) return 0;
     if(present(str =lower_case(str), this_player()) != this_object() &&
@@ -123,7 +123,7 @@ static int Open(string str) {
     }
     set_closed(0);
     message("my_action", sprintf("You open %s.", query_short()),this_player());
-    message("other_action", sprintf("%s opens %s.", 
+    message("other_action", sprintf("%s opens %s.",
       (string)this_player()->query_cap_name(), query_short()),
       environment(this_player()), ({ this_player() }));
     return 1;
@@ -140,7 +140,7 @@ int Close(string str) {
     set_closed(1);
     message("my_action", sprintf("You close %s.", query_short()),
       this_player());
-    message("other_action", sprintf("%s closes %s.", 
+    message("other_action", sprintf("%s closes %s.",
       (string)this_player()->query_cap_name(), query_short()),
       environment(this_player()), ({ this_player() }));
     return 1;
@@ -171,14 +171,14 @@ int Lock(string str) {
     }
     message("my_action", sprintf("You lock %s.", query_short()),
       this_player());
-    message("other_action", sprintf("%s locks %s.", 
+    message("other_action", sprintf("%s locks %s.",
       (string)this_player()->query_cap_name(), query_short()),
-      environment(this_player()), ({ this_player() }));  
+      environment(this_player()), ({ this_player() }));
     set_locked(1);
     return 1;
 }
 
-static int Unlock(string str) {
+protected  int Unlock(string str) {
     object ob;
     string what;
 
@@ -187,7 +187,7 @@ static int Unlock(string str) {
         sscanf(str, "%s with %s", str, what);
         if(!what || !(ob = present(what, this_player())))
           return notify_fail("Unlock it with what?\n");
-        else if(ob != present(__Key, this_player())) 
+        else if(ob != present(__Key, this_player()))
           return notify_fail("It does not work.\n");
     }
     if(!query_locked()) {
@@ -197,7 +197,7 @@ static int Unlock(string str) {
     set_locked(0);
     message("my_action", sprintf("You unlock %s.", query_short()),
       this_player());
-    message("other_action", sprintf("%s unlocks %s.", 
+    message("other_action", sprintf("%s unlocks %s.",
       (string)this_player()->query_cap_name(), query_short()),
       environment(this_player()), ({ this_player() }));
     return 1;
@@ -214,7 +214,7 @@ varargs string query_long(string str) {
 
     tmp = container::query_long(str);
     if(query_closed()) tmp +="\nIt is closed.";
-    else tmp = sprintf("%s\nContents:\n%s%s", tmp, 
+    else tmp = sprintf("%s\nContents:\n%s%s", tmp,
       describe_item_contents(({})), (str = describe_living_contents(({}))) != "" ?
       "\n"+str : "");
     return tmp;

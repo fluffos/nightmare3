@@ -1,4 +1,4 @@
-private static object gob;
+private nosave object gob;
 private  nosave string gstr;
 
 void set_hit_func(object ob) { gob = ob; set_hit((: gob, "weapon_hit" :)); }

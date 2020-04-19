@@ -2,7 +2,7 @@ private  nosave int i;
 private  nosave string gval;
 private  nosave string *gfuncs;
 
-static void set_item_functions(mixed *things, string *funcs) {
+protected void set_item_functions(mixed *things, string *funcs) {
     mapping tmp;
     gfuncs = funcs;
 

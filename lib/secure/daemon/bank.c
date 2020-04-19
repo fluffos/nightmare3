@@ -12,7 +12,7 @@
 inherit DAEMON;
 
 mapping account;
-static string current;
+nosave string current;
 
 int valid_access(string who);
 int account_exists(string who);

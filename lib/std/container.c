@@ -113,6 +113,6 @@ object *query_item_contents() {
       this_object());
 }
 
-static int filter_living(object ob) { return living(ob); }
+protected int filter_living(object ob) { return living(ob); }
 
-static int filter_items(object ob) { return !living(ob); }
+protected int filter_items(object ob) { return !living(ob); }

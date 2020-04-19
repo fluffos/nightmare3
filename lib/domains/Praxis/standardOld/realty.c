@@ -96,10 +96,10 @@ void reset() {
     ob->force_me("wear plate");
 }
 
-static int cmd_buy(string str) {
+protected int cmd_buy(string str) {
     object ob;
 
-     if(!present("atmos", this_object())) 
+     if(!present("atmos", this_object()))
       return notify_fail("Atmos is missing!\n");
     if(str == "deed") {
         if((int)this_player()->query_money("gold") <
@@ -152,7 +152,7 @@ string at_desk(string str) {
     else tmp += "No one seems to be around.";
     return tmp;
 }
-static int read_list(string str) {
+protected int read_list(string str) {
     string tmp;
 
     if(str != "list") return 0;

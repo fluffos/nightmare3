@@ -11,14 +11,14 @@ inherit DAEMON;
 
 string __Links;
 
-static private void load();
+private void load();
 
 void create() {
     daemon::create();
     load();
 }
 
-static private void load() {
+ private void load() {
     string *dirs, *files;
     int i, j, maxi, maxj;
 
@@ -36,5 +36,5 @@ static private void load() {
     }
     __Links += "</BODY></HTML>";
 }
-        
+
 string gateway() { return __Links; }

@@ -22,7 +22,7 @@ void create() {
     preload_estates();
 }
 
-static private void preload_estates() {
+private void preload_estates() {
     object ob;
     string *who;
     string desc;

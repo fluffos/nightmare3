@@ -11,11 +11,11 @@
 
 inherit DAEMON;
 void help();
-static string parse_time(int i);
+protected string parse_time(int i);
 
 int cmd_idle(string str) {
    object ob;
-   
+
    if(str && (ob = find_player(lower_case(str))) && interactive(ob) &&
       !ob->query_invis() )
    {
@@ -43,7 +43,7 @@ void help() {
    );
 }
 
-static string
+protected string
 parse_time(int t)
 {
    string str;

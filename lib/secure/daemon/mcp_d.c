@@ -16,11 +16,11 @@ inherit DAEMON;
 #define VALID_INTERMARES ([ "199.199.122.10": ({ "tna", "3996" }), \
 			"134.130.76.1": ({ "teu", "4996" }) ])
 
-static private int __SocketMCP;
-static private mapping __Sockets;
-static private mapping __ValidHosts;
+nosave private int __SocketMCP;
+nosave private mapping __Sockets;
+nosave private mapping __ValidHosts;
 
-void create() { 
+void create() {
     daemon::create();
     set_no_clean(1);
     __Sockets = ([]);
@@ -29,7 +29,7 @@ void create() {
     call_out("clean_sockets", 180);
 }
 
-static void setup() {
+protected void setup() {
     if((__SocketMCP=socket_create(STREAM,"read_callback","close_callback"))<0){
         log_file("inter_copy", "Failed to create socket.\n");
         return;
@@ -58,7 +58,7 @@ void listen_callback(int fd) {
 	    log_file("inter_copy", "Illegal connection attempt from "+tmp+".\n");
 	} else
 	    __Sockets[New] = ([ "address": tmp, "time": time() ]);
-    } 
+    }
 }
 
 void write_callback(int fd) {
@@ -109,7 +109,7 @@ void read_callback(int fd, string str) {
 		{
 		    eof = 1;
 		    i--;
-		    if (i) 
+		    if (i)
 			for (j=0;j<i;j++)
 			    write_file(__Sockets[fd]["store"],lines[j]+"\n");
 		} else
@@ -138,8 +138,8 @@ void close_connection(int fd) {
     map_delete(__Sockets, fd);
     socket_close(fd);
 }
-    
-static void clean_sockets() {
+
+protected void clean_sockets() {
     int *cles;
     int i;
 
@@ -159,7 +159,7 @@ void remove() {
 void write_tick() {
     int i, fd, f, pos;
     string str;
-    
+
     f = 0;
     i = sizeof(__Sockets);
     while (i--) {
@@ -184,7 +184,7 @@ void write_tick() {
 	call_out("write_tick",1);
 }
 
-static private void retrieve_file(int fd, string file) {
+ private void retrieve_file(int fd, string file) {
     string str;
     int i;
 
@@ -214,7 +214,7 @@ static private void retrieve_file(int fd, string file) {
     }
 }
 
-static private void store_file(int fd, string file, string *lines) {
+ private void store_file(int fd, string file, string *lines) {
     int i, j, eof;
 
     if (strlen(file) < 5 || file[0..4] != "/ftp/") {
@@ -238,7 +238,7 @@ static private void store_file(int fd, string file, string *lines) {
         __Sockets[fd]["store"]=file;
 }
 
-static private void do_send(string file,string dest) {
+ private void do_send(string file,string dest) {
     int fd;
     if (strlen(file) < 5 || file[0..4] != "/ftp/") {
 	log_file("inter_copy", "Someone attempted to send: "+file+".\n");
@@ -265,7 +265,7 @@ void send_file(string file, string mud) {
 	if (__ValidHosts[keys(__ValidHosts)[i]][0] == mud) {
 	    do_send(file,keys(__ValidHosts)[i]+" "+
 		__ValidHosts[keys(__ValidHosts)[i]][1]);
-	    break;	
+	    break;
 	}
     }
 }

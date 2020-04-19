@@ -15,13 +15,13 @@
 
 mapping links;
 string *non_voting;
-static mapping entered;
+nosave mapping entered;
 
-static void save_data() {
+protected void save_data() {
     save_object(SAVE_MULTI);
 }
 
-static void restore_data() { restore_object(SAVE_MULTI); }
+protected void restore_data() { restore_object(SAVE_MULTI); }
 
 void create()
 {

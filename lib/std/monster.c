@@ -11,16 +11,16 @@
 inherit LIVING;
 
 object tmp;
-static status heart_beat_on;
+nosave status heart_beat_on;
 int level;
-static int speed;
-static int moving;
+nosave int speed;
+nosave int moving;
 mapping emotes, speech, spells;
 string body_type;
 int __NextHeal;
 mixed __Aggressive;
 string __Race;
-private static mixed __Die;
+private nosave mixed __Die;
 string *route;
 int position, patrol;
 
@@ -141,7 +141,7 @@ void die(object ob) {
     }
    contents = all_inventory(this_object());
    for(i=0;i<sizeof(contents);i++) {
-      if(contents[i]->move(tmp)) 
+      if(contents[i]->move(tmp))
          if(!contents[i]->remove())
             destruct(contents[i]);
    }
@@ -260,7 +260,7 @@ void set_body_type(string str) {
   init_limb_data();
   monster_bod = (mapping)RACE_D->monster_body(str, query_max_hp());
   for(i = 0, max = sizeof(mon_limbs = keys(monster_bod)); i < max; i++)
-    add_limb(mon_limbs[i], monster_bod[mon_limbs[i]]["limb_ref"], 
+    add_limb(mon_limbs[i], monster_bod[mon_limbs[i]]["limb_ref"],
 	     monster_bod[mon_limbs[i]]["max_dam"], 0, 0);
   set_wielding_limbs((string *)RACE_D->query_monster_wielding_limbs(str));
   set_fingers((int)RACE_D->query_monster_fingers(str));
@@ -284,7 +284,7 @@ void set_spells(string *arr) {
     spells["commands"] = arr;
 }
 
-int query_spell_chance() { 
+int query_spell_chance() {
     if(spells) return spells["chance"];
     else return 0;
 }
@@ -347,7 +347,7 @@ int test_heart() {
     if(!(env = environment(this_object()))) return 0;
     if(query_current_attacker() || speed) return 1;
     i = sizeof(inv = all_inventory(env));
-    while(i--) 
+    while(i--)
       if(interactive(inv[i]) || inv[i]->query("aggressive")) return 1;
     return 0;
 }
@@ -360,7 +360,7 @@ void receive_message(string cl, string msg) {
 
 void set_languages(string *langs) {
     int i;
-    
+
     i = sizeof(langs);
     while(i--) set_lang_prof(langs[i], 10);
 }

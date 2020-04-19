@@ -17,12 +17,12 @@ inherit CLEAN_UP;
 private int __Invis, __Value, __Mass;
 private string __Material, __CapName, __VendorType;
 private mixed __Short, __Long, __PreventDrop, __PreventGet, __PreventPut, __Read;
-static private string *__Id, *__Adjectives;
-static private int __Destroy;
-static string __TrueName, __Creator;
-static private object __LastLocation;
-static private mapping __Properties;
-static private function *__InvisTests;
+nosave private string *__Id, *__Adjectives;
+nosave private int __Destroy;
+nosave string __TrueName, __Creator;
+nosave private object __LastLocation;
+nosave private mapping __Properties;
+nosave private function *__InvisTests;
 
 void create() {
     clean_up::create();
@@ -138,7 +138,7 @@ int id(string str) {
     return (member_array(lower_case(str), query_id()) != -1);
 }
 
-string *parse_command_id_list() { 
+string *parse_command_id_list() {
     return query_id();
 }
 
@@ -150,7 +150,7 @@ string *parse_command_adjectiv_id_list() {
     return query_adjectives();
 }
 
-static string pluralize_id(string str) { return pluralize(str); }
+protected string pluralize_id(string str) { return pluralize(str); }
 
 int ReadObject(string str) {
     mixed val;
@@ -162,12 +162,12 @@ int ReadObject(string str) {
         return (int)((*val)(str));
       }
     message("info", val, this_player());
-    message("other_action", sprintf("%s reads the %s", 
+    message("other_action", sprintf("%s reads the %s",
       (string)this_player()->query_cap_name(), query_name()),
       environment(this_player()), ({ this_player() }));
     return 1;
   }
-    
+
 void set_id(string *arr) {
     if(!pointerp(arr)) error("Bad argument 1 to set_id().\n");
     __Id = arr;
@@ -182,12 +182,12 @@ void set_adjectives(string *arr) {
 
 string *query_adjectives() { return __Adjectives; }
 
-void set_name(string str) { 
+void set_name(string str) {
     if(!stringp(str)) error("Bad argument 1 to set_name().\n");
     __TrueName = lower_case(str);
     if(!__CapName) __CapName = capitalize(str);
     if(!__Creator)
-      __Creator = (previous_object() ? file_name(previous_object()) : 
+      __Creator = (previous_object() ? file_name(previous_object()) :
         "Unknown");
   }
 
@@ -220,7 +220,7 @@ string query_short() {
   }
 
 void set_long(mixed val) {
-    if(!stringp(val) && !functionp(val)) 
+    if(!stringp(val) && !functionp(val))
       error("Bad argument 1 to set_long().\n");
     __Long = val;
   }
@@ -233,8 +233,8 @@ varargs string query_long(string str) {
     else error("Illegal function pointer.\n");
   }
 
-varargs void set_read(mixed val, mixed unused) {  
-    if(!stringp(val) && !functionp(val)) 
+varargs void set_read(mixed val, mixed unused) {
+    if(!stringp(val) && !functionp(val))
       error("Bad argument 1 to set_read().\n");
     else __Read = val;
 }
@@ -266,7 +266,7 @@ void set_value(int x) {
 
 int query_value() { return __Value; }
 
-static void set_last_location(object ob) { __LastLocation = ob; }
+protected void set_last_location(object ob) { __LastLocation = ob; }
 
 object query_last_location() { return __LastLocation; }
 
@@ -319,7 +319,7 @@ void set_material(string str) {
 
 string query_material() { return __Material; }
 
-void set_vendor_type(string str) { 
+void set_vendor_type(string str) {
     if(!stringp(str)) error("Bad argument 1 to set_vendor_type().\n");
     else __VendorType = str;
 }
@@ -327,7 +327,7 @@ void set_vendor_type(string str) {
 string query_vendor_type() { return __VendorType; }
 
 void set_prevent_get(mixed val) {
-    if(!stringp(val) && !functionp(val)) 
+    if(!stringp(val) && !functionp(val))
       error("Bad argument 1 to set_prevent_get().\n");
     __PreventGet = val;
   }
@@ -335,7 +335,7 @@ void set_prevent_get(mixed val) {
 mixed query_prevent_get() { return __PreventGet; }
 
 void set_prevent_drop(mixed val) {
-    if(!stringp(val) && !functionp(val)) 
+    if(!stringp(val) && !functionp(val))
       error("Bad argument 1 to set_prevent_drop().\n");
     __PreventDrop = val;
   }
@@ -403,7 +403,7 @@ int get() { return allow_get(this_player()); }
 
 int drop() { return !allow_drop(this_player()); }
 
-string special_long(string str) { 
+string special_long(string str) {
     return (query_night() ? query_property("night long") : query_property("day long"));
 }
 

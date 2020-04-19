@@ -7,7 +7,7 @@
 
 #include "more.h"
 
-static private mapping __More;
+nosave private mapping __More;
 
 void create() { __More = ([]); }
 
@@ -49,7 +49,7 @@ varargs int more(mixed what, string cl, function endmore, mixed args) {
     return 1;
 }
 
-static void do_more(string cmd) {
+protected void do_more(string cmd) {
     string args;
     int i, x;
 
@@ -127,7 +127,7 @@ static void do_more(string cmd) {
         message(__More["class"], __More["lines"][i], this_object());
     }
     if((__More["current"] = i) >= __More["total"]) {
-        if(functionp(__More["endfun"]) && 
+        if(functionp(__More["endfun"]) &&
           (int)master()->valid_function(__More["endfun"]))
             (*__More["endfun"])(__More["args"]);
         __More = ([]);
@@ -157,7 +157,7 @@ void do_help() {
     );
 }
 
-static void regexp_fwd(string str) {
+protected void regexp_fwd(string str) {
     string *matches;
     int i;
 
@@ -178,7 +178,7 @@ static void regexp_fwd(string str) {
     do_more(" ");
 }
 
-static void regexp_bkwd(string str) {
+protected void regexp_bkwd(string str) {
     string *matches;
     int i;
 

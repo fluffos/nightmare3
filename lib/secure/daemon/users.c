@@ -44,7 +44,7 @@ void suicide(string who) {
     delete_user(who);
 }
 
-static private void delete_user(string who) {
+ private void delete_user(string who) {
     string tmp;
 
     rename(sprintf("%s/%s/%s%s", DIR_USERS, who[0..0], who, __SAVE_EXTENSION__),

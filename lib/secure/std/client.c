@@ -20,13 +20,13 @@ class client {
 
 private  nosave int DestructOnClose, SocketType = -1;
 private  nosave string LogFile;
-private static function Read;
-private static class client Socket;
+private nosave function Read;
+private nosave class client Socket;
 
-static void eventClose(class client sock);
-static void eventRead(mixed val);
-static void eventSocketClose();
-static void eventSocketError(string str, int x);
+protected void eventClose(class client sock);
+protected void eventRead(mixed val);
+protected void eventSocketClose();
+protected void eventSocketError(string str, int x);
 
 function SetRead(function f) { return (Read = f); }
 
@@ -63,20 +63,20 @@ int eventCreateSocket(string host, int port) {
     return ret;
 }
 
-static void eventAbortCallback(int fd) {
+protected void eventAbortCallback(int fd) {
     if( !Socket ) return;
     if( fd != Socket->Descriptor ) return;
     eventClose(Socket);
 }
 
-static void eventReadCallback(int fd, mixed val) {
+protected void eventReadCallback(int fd, mixed val) {
     if( functionp(Read) ) evaluate(Read, val);
     else eventRead(val);
 }
 
-static void eventRead(mixed val) { }
+protected void eventRead(mixed val) { }
 
-static void eventWriteCallback(int fd) {
+protected void eventWriteCallback(int fd) {
     int x;
     if( !Socket ) return;
     Socket->Blocking = 0;
@@ -121,7 +121,7 @@ void eventWrite(mixed val) {
     }
 }
 
-static void eventClose(mixed arg) {
+protected void eventClose(mixed arg) {
     class client sock;
     if(!arg) return;
     if(classp(arg)) sock = arg;
@@ -140,14 +140,14 @@ static void eventClose(mixed arg) {
     if( DestructOnClose ) destruct(this_object());
 }
 
-static void eventSocketClose() { }
+protected void eventSocketClose() { }
 
 int eventDestruct() {
     eventClose(Socket);
     return destruct(this_object());
 }
 
-static void eventSocketError(string str, int x) {
+protected void eventSocketError(string str, int x) {
     if( LogFile )
         log_file(LogFile, ctime(time()) + "\n" + socket_error(x) + "\n");
 }

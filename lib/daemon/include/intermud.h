@@ -6,11 +6,11 @@ class list {
     mapping List;
 }
 
-static void create();
-static void Setup();
-static void eventRead(mixed *packet);
-static void eventSocketClose();
-static void eventConnectionFailure();
+protected void create();
+protected void Setup();
+protected void eventRead(mixed *packet);
+protected void eventSocketClose();
+protected void eventConnectionFailure();
 int SetDestructOnClose(int x);
 int SetSocketType(int x);
 string GetMudName(string mud);

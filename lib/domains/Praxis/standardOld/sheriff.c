@@ -82,12 +82,12 @@ void init() {
     add_action("cmd_quit", "quit");
 }
 
-static int cmd_quit(string str) {
+protected int cmd_quit(string str) {
     message("system", "You cannot quit from the sheriff's office.",
       this_player());
     return 1;
 }
-   
+
 void rescue_me(object victim, object outlaw) {
     object *obs;
     int x, i;
@@ -129,7 +129,7 @@ string la_jail(string arg) {
  object *clone_guards(int num) {
   object *obs;
   int y, x, i, tot;
-  
+
   y = (int)POLITICS_D->query_spending("police");
   x = (int)POLITICS_D->query_personnel("police");
   for(i=0, obs = allocate(num); i<num; i++)
@@ -154,7 +154,7 @@ string la_jail(string arg) {
 }
 
 string death_by_hanging(object who) {
-  if(member_array(who, __Prisoners) == -1) 
+  if(member_array(who, __Prisoners) == -1)
     return (string)who->query_cap_name()+" is not a prisoner.";
   message("say", "%^RED%^You hear the rythmic pounding of "
       "the city guard approaching the door.  Two large, burly "
@@ -177,7 +177,7 @@ void hanging_part_two(object who) {
 void hanging_part_three(object who) {
   int x, y;
   object *obs;
-  
+
   message("say", "\n%^RED%^The two guards securely grasp your "
       "arms and begin dragging you to the town square.", who);
   (DIR_STANDARD_DOMAIN+"/square")->set_property("no bump", 1);
@@ -233,7 +233,7 @@ void hanging_part_six(object who) {
 
 void hanging_part_seven(object who) {
   object here;
-  
+
   here = environment(who);
   message("say", "\n%^RED%^The klunk of the floor falling beneath "
       "you is the final sound to reach your ears.", who);
@@ -257,10 +257,10 @@ void hanging_part_eight(object where) {
   if(stuff = present("gallows", where)) stuff->remove();
   where->set_property("no bump", 0);
 }
- 
+
 string death_by_firing_squad(object who) {
   object *obs;
-  if(member_array(who, __Prisoners) == -1) 
+  if(member_array(who, __Prisoners) == -1)
     return who->query_cap_name()+" is not a prisoner.";
   message("say", "%^RED%^A large, burly guard enters, accompanied by "
       "a priest in black robes mumbling a prose from a small book "
@@ -274,11 +274,11 @@ string death_by_firing_squad(object who) {
   call_out("squad_part_two", 2, who);
   return "The execution has begun.";
 }
- 
+
 void squad_part_two(object who) {
   object pole, *obs;
   int x;
-  
+
   message("say", "\n%^RED%^%^BOLD%^The guard tells you:%^RESET%^ Your "
       "time has come.", who);
   message("say", "\n%^RED%^Opening the cell, one of the guards ties "
@@ -305,13 +305,13 @@ void squad_part_two(object who) {
   clone_guards(5)->move(DIR_STANDARD_DOMAIN+"/square");
   call_out("squad_part_three", 5, who);
 }
- 
+
 void squad_part_three(object who) {
   object thing;
-  if(thing=present("guard", environment(who))) 
+  if(thing=present("guard", environment(who)))
     thing->move(DIR_STANDARD_DOMAIN+"/square");
   else clone_guards(1)->move(DIR_STANDARD_DOMAIN+"/square");
-  if(thing=present("priest", environment(who))) 
+  if(thing=present("priest", environment(who)))
     thing->move(DIR_STANDARD_DOMAIN+"/square");
   else clone_guards(1)->move(DIR_STANDARD_DOMAIN+"/square");
   who->move_player(DIR_STANDARD_DOMAIN+"/square");
@@ -333,17 +333,17 @@ void squad_part_three(object who) {
       environment(who));
   call_out("squad_part_four", 4, who);
 }
- 
+
 void squad_part_four(object who) {
   message("say", "\n%^RED%^The drums' beat becomes a steady roll, and "
       "you hear a guard shout a single, inaudiable word.  You hear "
       "the rustle of weapons being cocked.", who);
   message("say", "\nA lead guard yells out a single inaudiable word "
-      "as the line of guards ready their weapons.", environment(who), 
+      "as the line of guards ready their weapons.", environment(who),
       who);
   call_out("squad_part_five", 4, who);
 }
- 
+
 void squad_part_five(object who) {
   message("say", "\n%^RED%^A guard yells a second word as the firing "
       "squad prepare the arrows for launching.", who);
@@ -352,10 +352,10 @@ void squad_part_five(object who) {
       who);
   call_out("squad_part_six", 4, who);
 }
- 
+
 void squad_part_six(object who) {
   int x, dam;
-  
+
   message("say", "\n%^RED%^The guard yells a thrid and final word, and "
       "dozens of arrows peirce your entire body.  The darkness surrounding "
       "you becomes even darker, and vague voices begin to cackle evily "
@@ -367,7 +367,7 @@ void squad_part_six(object who) {
   dam= ((int)who->query_max_hp())/5;
   present("hood", who)->remove();
   present("handcuffs", who)->remove();
-  for(x=0; x<6; ++x) 
+  for(x=0; x<6; ++x)
     who->do_damage("torso", dam + 10);
   call_out("squad_part_seven", 4, environment(who));
   who->die();
@@ -377,16 +377,16 @@ void squad_part_seven(object place) {
   object thing;
   message("say", "The guards begin marching away, one removing the pole "
       "on his way out.  He leaves the dead body on the "
-      "ground to rot away, just as it deserves.", 
+      "ground to rot away, just as it deserves.",
       DIR_STANDARD_DOMAIN+"/square");
   place->set_property("no bump", 0);
-  while(thing = present("guard", place)) 
+  while(thing = present("guard", place))
     thing->remove();
   if(thing=present("pole", place)) thing->remove();
 }
- 
+
 string death_by_torture(object who) {
-  if(member_array(who, __Prisoners) == -1) 
+  if(member_array(who, __Prisoners) == -1)
     return who->query_cap_name()+" is not a prisoner.";
   message("say", "%^RED%^A large guard enters your cell and ties "
       "your hands with a large rope.  Saying nothing, he drags you "
@@ -395,7 +395,7 @@ string death_by_torture(object who) {
   call_out("torture_part_two", 3, who);
   return "The execution has begun.";
 }
- 
+
 void torture_part_two(object who) {
   who->move_player("/"+__DIR__+"torture_room");
   message("say", "%^RED%^The guard brings you into a room of which "
@@ -409,7 +409,7 @@ void torture_part_two(object who) {
       "a long pole.", who);
   call_out("torture_part_three", 4, who);
 }
- 
+
 void torture_part_three(object who) {
   message("say", "\n%^RED%^%^BOLD%^The guard tells you: %^RESET%^Now "
       "just sit tight and it will all be over in a few hours.", who);
@@ -418,12 +418,12 @@ void torture_part_three(object who) {
       "swinging it like a pendulium.", who);
   call_out("torture_part_four", 4, who);
 }
- 
+
 void torture_part_four(object who) {
   message("say", "\nThe guard ponders for a moment.", who);
   call_out("torture_part_five", 4, who);
 }
- 
+
 void torture_part_five(object who) {
   message("say", "\n%^RED%^%^BOLD%^The guard tells you:%^RESET%^ Ya' "
      "know, I respect yer kind.  Nun too many pe'ple gots the balls "
@@ -445,7 +445,7 @@ void torture_part_six(object who) {
       "the room, locking the door behind him.", who);
   call_out("torture_part_seven", 6, ({ who, 1 }) );
 }
- 
+
 void torture_part_seven(mixed *stuff) {
   object who;
   who = stuff[0];
@@ -465,18 +465,18 @@ void torture_part_seven(mixed *stuff) {
                 "You can't help but to wonder if you're the first life "
                 "to be claimed by this horrific device.");
   }
-  if(++stuff[1] == 10) 
+  if(++stuff[1] == 10)
       call_out("torture_part_eight", 5, who);
   else call_out("torture_part_seven", 6, stuff);
 }
- 
+
 void torture_part_eight(object who) {
   message("say", "\n%^RED%^The blade swings dangerously close to your "
       "neck.  By your best estimate, you have a single breath left...",
       who);
   call_out("torture_part_nine", 3, who);
 }
- 
+
 void torture_part_nine(object who) {
   message("say", "\n%^RED%^In one final swoop, the huge metal blade "
       "places a clean cut into your throat.  Your struggle for more "
@@ -487,7 +487,7 @@ void torture_part_nine(object who) {
   present("handcuffs", who)->remove();
   who->die();
 }
- 
+
 string death_by_the_pit(object who) {
   if(member_array(who, __Prisoners) == -1)
     return who->query_cap_name()+" is not a prisoner.";
@@ -503,11 +503,11 @@ string death_by_the_pit(object who) {
   call_out("pit_part_two", 5, who);
   return "The execution has begun.";
 }
- 
- 
+
+
  void pit_part_two(object who) {
    string orig_long;
-   
+
    message("say", "Two guards enter and clear off an area "
    "revealing a large stone covering.  The guards lift the heavy "
    "plate, opening a deep, black hole on the northeastern side of "
@@ -522,7 +522,7 @@ string death_by_the_pit(object who) {
    clone_guards(2)->move(DIR_STANDARD_DOMAIN+"/square");
    call_out("pit_part_three", 3, ({ who, orig_long }));
  }
- 
+
 void pit_part_three(mixed *stuff) {
   stuff[0]->move_player(DIR_STANDARD_DOMAIN+"/square");
   message("say", "\n%^RED%^Upon the arrival of the all too familar "
@@ -533,10 +533,10 @@ void pit_part_three(mixed *stuff) {
       "town guards.", environment(stuff[0]), stuff[0]);
   call_out("pit_part_four", 4, stuff);
 }
- 
+
 void pit_part_four(mixed *stuff) {
   object here;
-  
+
   message("say", "\n%^RED%^%^BOLD%^A guard tells you:%^RESET%^ Say "
       "hi to the Leaper for me!", stuff[0]);
   message("say", "\n%^RED%^The guard cackles evilly as he shoves you "
@@ -550,14 +550,14 @@ void pit_part_four(mixed *stuff) {
   (DIR_STANDARD_DOMAIN+"/square")->set_property("no bump", 0);
   message("say", "\nThe guard pulls the protective covering over the "
       "hole.  Muffled screams of pain echo from within as you realize "
-      "the criminal's chances of a peacful death are zero.", 
+      "the criminal's chances of a peacful death are zero.",
       DIR_STANDARD_DOMAIN+"/square");
   call_out("pit_part_five", 10, ({ here, stuff[1] }));
 }
 
 void pit_part_five(mixed *stuff) {
   object thing;
-  
+
   message("say", "The guards, satisfied that this world is a better "
       "place, replace the cover upon the pit of spiders and"
       "walk off.", stuff[0]);
@@ -572,9 +572,9 @@ int prevent_down() {
       "you really don't want to go down there.", this_player());
   return 0;
 }
- 
+
 string death_by_stoning(object who) {
-  if(member_array(who, __Prisoners) == -1) 
+  if(member_array(who, __Prisoners) == -1)
     return who->query_cap_name()+" is not a prisoner.";
   message("say", "%^RED%^A guard enters and ties your hands together "
       "with a thick rope.", who);
@@ -586,12 +586,12 @@ string death_by_stoning(object who) {
       // "of "+who->query_cap_name()+" by stoning in the town square.");
   call_out("stoning_part_two", 5, who);
 }
- 
+
 void stoning_part_two(object who) {
   object *townsfolk, *homes;
   string *wanted;
   int x, y;
-  
+
   wanted = ({ "horace", "lars", "beggar", "knight", "waitress" });
   townsfolk=({ });
   homes = ({ });
@@ -622,7 +622,7 @@ void stoning_part_two(object who) {
 
 void control_townsfolk(mixed *them) {
   int x;
-  
+
   for(x=0; x<sizeof(them[1]); x++)
     switch(random(5)) {
       case 0 : message("saY", them[1][x]->query_cap_name()+" cheers "
@@ -654,7 +654,7 @@ void stoning_part_three(mixed *townsfolk) {
 }
 
 string death_by_beheading(object who) {
-  if(member_array(who, __Prisoners) == -1) 
+  if(member_array(who, __Prisoners) == -1)
     return who->query_cap_name()+" is not a prisoner.";
   message("say", "%^RED%^A large, burly guard enters your cell and securly "
       "ties your hands with a thick rope.  He grabs your arm and pulls "
@@ -667,7 +667,7 @@ string death_by_beheading(object who) {
   call_out("beheading_part_two", 2, who);
   return "The execution has begun";
 }
- 
+
 void beheading_part_two(object who) {
   (DIR_STANDARD_DOMAIN+"/square")->set_property("no bump", 1);
   clone_guards(4)->move(DIR_STANDARD_DOMAIN+"/square");
@@ -682,7 +682,7 @@ void beheading_part_two(object who) {
       "lead by the guard and commanded to kneal.", who);
   call_out("beheading_part_three", 3, who);
 }
- 
+
 void beheading_part_three(object who) {
   message("say", "\n%^RED%^From atop the platform you see the gathering "
       "crowd, very unfriendly.  A rope is placed around your neck, and "
@@ -695,7 +695,7 @@ void beheading_part_three(object who) {
       "a steady beat...", environment(who), who);
   call_out("beheading_part_four", 3, who);
 }
- 
+
 void beheading_part_four(object who) {
   message("say", "\n%^RED%^Without warning, the drum beat comes to a "
       "sudden stop.", who);
@@ -703,12 +703,12 @@ void beheading_part_four(object who) {
       "hooded brings his axe down through "+who->query_cap_name()+"'s "
       "neck without hesitation.  "+who->query_cap_name()+"'s head drops "
       "to the platform with a loud thunk, the expression of desparation "
-      "permanently affixed to "+who->query_possessive()+" face.", 
+      "permanently affixed to "+who->query_possessive()+" face.",
       environment(who), who);
   (DIR_STANDARD_DOMAIN+"/square")->set_property("no bump", 0);
   who->die();
 }
- 
+
 
 varargs mapping valid_execution( string type )
 {

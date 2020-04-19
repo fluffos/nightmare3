@@ -15,19 +15,19 @@
 #define HEALING_FORMULA (stats["strength"]+stats["constitution"]+stats["dexterity"]+stats["charisma"])*6
 
 int invis, ok_to_heal;
-static int forced, sight_bonus, spiritual, physical;
+nosave int forced, sight_bonus, spiritual, physical;
 string description;
-static string party;
-static string *search_path;
+nosave string party;
+nosave string *search_path;
 private string gender;
 mapping stats;
-static mapping stat_bonus;
+nosave mapping stat_bonus;
 mapping languages;
-static mapping language_bonus;
+nosave mapping language_bonus;
 string primary_language;
-static private mixed *__BeforeLocked;
+nosave private mixed *__BeforeLocked;
 int __PlayerAge;
-static private int __Locked, __LastAged;
+nosave private int __Locked, __LastAged;
 int __PlayerKiller;
 mapping language_exp;
 
@@ -58,7 +58,7 @@ int query_quenched();
 int query_invis();
 string query_party();
 string query_long(string unused);
-static void init_path();
+protected  void init_path();
 
 void create() {
     combat::create();
@@ -75,14 +75,14 @@ void heart_beat() {
     }
 }
 
-static void init_living() {
+protected  void init_living() {
     add_action("cmd_hook", "", 1);
     add_action("cmd_lock", "lock");
     init_path();
     init_attack();
 }
 
-static void init_path() {
+protected  void init_path() {
     string tmp;
 
     search_path = ({ DIR_MORTAL_CMDS, DIR_SECURE_MORTAL_CMDS, DIR_CLASS_CMDS });
@@ -101,7 +101,7 @@ static void init_path() {
     }
 }
 
-static void init_stats() { stats = ([]); }
+protected  void init_stats() { stats = ([]); }
 
 nomask  private  int cmd_hook(string cmd) {
     string file, verb;
@@ -617,7 +617,7 @@ string query_possessive() { return possessive(gender); }
 
 string query_objective() { return objective(gender); }
 
-static int cmd_lock(string str) {
+protected  int cmd_lock(string str) {
     if(str != "terminal") return 0;
     __BeforeLocked = ({ environment(this_player()),
       file_name(environment(this_player())) });
@@ -629,7 +629,7 @@ static int cmd_lock(string str) {
     return 1;
 }
 
-static void unlock(string str) {
+protected  void unlock(string str) {
     if((string)this_object()->query_password() !=
       crypt(str, (string)this_object()->query_password())) {
         message("prompt", sprintf("\n(%s) Password: ", mud_name()),

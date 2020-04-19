@@ -12,10 +12,10 @@
 #define MAX_SCENTS           10
 #define TRACK_FADE_TIME      120
 
-static private mapping __Exits, __Enters;
-static private mapping __Tracks, __TrackFaded, __Scents, __ScentFaded;
+nosave private mapping __Exits, __Enters;
+nosave private mapping __Tracks, __TrackFaded, __Scents, __ScentFaded;
 
-static void create() {
+protected void create() {
     __Exits = ([]);
     __Enters = ([]);
     __Tracks = ([]);
@@ -124,7 +124,7 @@ varargs void add_enter(string dir, string dest, function pre, function post) {
     reinitiate();
 }
 
-void remove_enter(string dir) { 
+void remove_enter(string dir) {
     if(__Enters[dir]) map_delete(__Enters, dir);
     reinitiate();
 }
@@ -194,12 +194,12 @@ void add_scent(object ob, string str) {
     __Scents[nom] += (int)ob->query_scent();
 }
 
-int query_scent(string str) { 
+int query_scent(string str) {
     if(!__Scents[str]) return 0;
     else __Scents[str] -= (time() - __ScentFaded[str]);
     __ScentFaded[str] = time();
     if(__Scents[str] < 1) map_delete(__Scents, str);
-    return __Scents[str]; 
+    return __Scents[str];
 }
 
 mapping query_scents() {

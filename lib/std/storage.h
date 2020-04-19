@@ -1,12 +1,12 @@
 #ifndef __STORAGE_H
 #define __STORAGE_H
 
-static int Put(string str);
-static int Get(string str);
-static int Open(string str);
-static int Close(string str);
-static int Lock(string str);
-static int Unlock(string str);
+protected  int Put(string str);
+protected  int Get(string str);
+protected  int Open(string str);
+protected  int Close(string str);
+protected  int Lock(string str);
+protected  int Unlock(string str);
 int pick_lock();
 varargs string query_long(string str);
 varargs int receive_objects(object ob);

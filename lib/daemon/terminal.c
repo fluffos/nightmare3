@@ -12,7 +12,7 @@ inherit DAEMON;
 #define ANSI(p) sprintf("%c["+(p)+"m", 27)
 #define ESC(p) sprintf("%c"+(p), 27)
 
-static mapping term_info;
+nosave mapping term_info;
 
 void create() {
     daemon::create();
@@ -30,7 +30,7 @@ void create() {
       "B_RED":ANSI(41), "B_GREEN":ANSI(42), "B_ORANGE":ANSI(43),
       "B_YELLOW":ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
       "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
-      "CLEARLINE":ESC("[L")+ESC("[G"), "B_MAGENTA":ANSI(45), "STATUS":"", "WINDOW":"", 
+      "CLEARLINE":ESC("[L")+ESC("[G"), "B_MAGENTA":ANSI(45), "STATUS":"", "WINDOW":"",
       "INITTERM":ESC("[H")+ESC("[2J"), "ENDTERM":"" ]),
       "freedom": ([ "RESET": ESC("G0"), "BOLD":ESC("G@"), "FLASH":ESC("G2"),
       "BLACK":"", "RED":"", "GREEN":"", "ORANGE":"", "YELLOW":"", "BLUE":"",
@@ -46,7 +46,7 @@ void create() {
       "WHITE":ANSI(37), "B_RED":ANSI(41), "B_GREEN":ANSI(42),
       "B_ORANGE":ANSI(43), "B_YELLOW": ANSI(1)+ANSI(43), "B_BLUE":ANSI(44),
       "B_CYAN": ANSI(46), "B_BLACK":ANSI(40), "B_WHITE":ANSI(47),
-      "B_MAGENTA":ANSI(45), "STATUS":ESC("[23;24r")+ESC(8), 
+      "B_MAGENTA":ANSI(45), "STATUS":ESC("[23;24r")+ESC(8),
       "WINDOW":ESC(7)+ESC("[0;22r")+ESC("[22H\n"),
       "INITTERM":ESC("[H")+ESC("[J")+ESC("[23;24r")+ESC("23H\n"),
       "CLEARLINE":"\r", "ENDTERM":ESC("[0r")+ESC("[H")+ESC("[J") ]),
@@ -54,8 +54,8 @@ void create() {
       "BOLD": ESC("[7m"), "FLASH":ESC("[5m$<2>"), "BLACK":ANSI(30),
       "RED":ANSI(31), "GREEN":ANSI(32), "ORANGE":ANSI(33), "YELLOW":ANSI(33),
       "BLUE":ANSI(34), "CYAN":ANSI(36), "MAGENTA":ANSI(35),"BLACK":ANSI(34),
-      "WHITE":ANSI(38), "B_RED":ANSI(41), "B_GREEN":ANSI(42), 
-      "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(43), "B_BLUE":ANSI(44), 
+      "WHITE":ANSI(38), "B_RED":ANSI(41), "B_GREEN":ANSI(42),
+      "B_ORANGE":ANSI(43), "B_YELLOW":ANSI(43), "B_BLUE":ANSI(44),
       "B_CYAN":ANSI(46), "B_BLACK":ANSI(40), "B_WHITE": ANSI(47),
       "B_MAGENTA": ANSI(45), "STATUS":"", "WINDOW":"", "INITTERM":"",
       "CLEARLINE":"\r", "ENDTERM":"" ]),

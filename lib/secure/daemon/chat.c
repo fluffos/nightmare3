@@ -18,15 +18,15 @@
 inherit DAEMON;
 
 string suspect,site,plainmsg,chan,foo,bar,baz;
-static private mapping Channels;
-static private mapping chanlast;
+nosave private mapping Channels;
+nosave private mapping chanlast;
 
-static private string *local_chans = ({"newbie","cre","gossip","admin","error",
+ private string *local_chans = ({"newbie","cre","gossip","admin","error",
   "priest", "mage", "explorer", "thief", "fighter", "death", "connections" });
-static string *syschans = ({ "death", "connections" });
+nosave string *syschans = ({ "death", "connections" });
 
 
-static void create() {
+protected void create() {
     object pl;
     string *tmp_arr = ({});
     daemon::create();
@@ -56,7 +56,7 @@ static void create() {
 string decolor(string str){
     string s1 = "", s2, s3, test;
     int tmp = 2;
-    if(sscanf(str,"%s<%s>%s",s1,s2,s3) != 3) 
+    if(sscanf(str,"%s<%s>%s",s1,s2,s3) != 3)
 	tmp = sscanf(str,"<%s>%s",s2,s3);
     if(tmp != 2) return str;
     else {
@@ -67,7 +67,7 @@ string decolor(string str){
 
 varargs int CanListen(object who, string canal){
     return 1;
-} 
+}
 
 varargs int CanTalk(object who, string canal){
     return 1;
@@ -165,7 +165,7 @@ int cmdChannel(string verb, string str) {
     object ob = 0;
     int emote;
 
-    if(str[0..0] == ":" && 
+    if(str[0..0] == ":" &&
       (member_array(str[1..1], ({ "Q", "O", "P", "D", "I", "X" })) == -1 &&
 	sizeof(str) > 2)){
 	if(strsrch(verb,"emote") == -1) verb += "emote";
@@ -203,7 +203,7 @@ int cmdChannel(string verb, string str) {
 		}
 	    }
 	    if( !(mud = (string)INTERMUD_D->GetMudName(mud)) ) {
-		this_player()->eventPrint(mud_name() + " is not aware of " 
+		this_player()->eventPrint(mud_name() + " is not aware of "
 		  "such a place.", MSG_ERROR);
 		return 1;
 	    }
@@ -424,7 +424,7 @@ int cmdChannel(string verb, string str) {
 	}
 	else {
 	    SERVICES_D->eventSendChannel(name, rc, str, emote, targetkey,
-	      target_msg);          
+	      target_msg);
 	}
     }
     return 1;
@@ -446,7 +446,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 
     if(member_array(ch, syschans) != -1) {
 	emote = 0;
-    } 
+    }
     if(channeler){
 	if(!CanTalk(channeler, ch) && member_array(ch, syschans) == -1){
 
@@ -532,7 +532,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
 		if(listener->GetNoChanColors()) tmp = decolor(tmp);
-		if(!ignore && CanListen(listener,ch) && !(listener->GetProperty("mute"))) 
+		if(!ignore && CanListen(listener,ch) && !(listener->GetProperty("mute")))
 		    listener->eventPrint(tmp, MSG_CHAN);
 		ignore = 0;
 	    }
@@ -546,7 +546,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 			if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		    }
 		    if(ob->GetNoChanColors()) tmp = decolor(tmp);
-		    if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute"))) 
+		    if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute")))
 			ob->eventPrint(tmp, MSG_CHAN);
 		    ignore = 0;
 		}
@@ -616,7 +616,7 @@ varargs void eventSendChannel(string who, string ch, string msg, int emote,
 		    if(jerk && lower_case(site) == lower_case(jerk)) ignore = 1;
 		}
 		if(ob->GetNoChanColors()) msg = decolor(msg);
-		if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute"))) 
+		if(!ignore && CanListen(ob,ch)&& !(ob->GetProperty("mute")))
 		    ob->eventPrint(msg, MSG_CHAN);
 
 		ignore = 0;
@@ -670,7 +670,7 @@ string GetLocalChannel(string ch) {
 
 string GetRemoteChannel(string ch) {
     switch(ch) {
-    case "intercre": 
+    case "intercre":
 	return "imud_code";
 
     case "intergossip":

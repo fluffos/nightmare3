@@ -1,43 +1,43 @@
 #include <std.h>
- 
+
 inherit ROOM;
- 
-static private int __EntryAllowed, __PartyTime;
- 
+
+nosave private int __EntryAllowed, __PartyTime;
+
 int query_party_time();
 int x;
- 
+
 void create() {
     room::create();
-    set_properties( ([ "light":2, "indoors":1, "no attack":1, 
+    set_properties( ([ "light":2, "indoors":1, "no attack":1,
       "no teleport":1, "no steal":1, "no magic":1 ]) );
     set_short("%^MAGENTA%^%^BOLD%^In the volcano%^RESET%^");
     set_long(
       "You are standing on a wide, circular platform, surrounded on "
       "all sides by %^RED%^bubbling lava%^RESET%^.  The platform floats "
       "above the pool of lava at a safe distance, yet close enough for "
-      "you to feel the heat as the lava sometimes flares upward. " 
+      "you to feel the heat as the lava sometimes flares upward. "
       "The platform is decorated with %^MAGENTA%^floating lights "
-      "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. " 
+      "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. "
       "Tables with refreshments have also been placed near the edges of "
       "the platform. ");
-    set_items( 
+    set_items(
        ([
          ({"platform", "wide platform", "circular platform"}) :
              "The platform floats "
              "above the pool of lava at a safe distance, yet close enough for "
-             "you to feel the heat as the lava sometimes flares upward. " 
+             "you to feel the heat as the lava sometimes flares upward. "
              "The platform is decorated with %^MAGENTA%^floating lights "
-             "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. " 
-             "Tables with refreshments have also been placed near the " 
+             "%^RESET%^of %^BLUE%^varying %^ORANGE%^hues and %^RESET%^size. "
+             "Tables with refreshments have also been placed near the "
              "edges of the platform. ",
-         ({"sides", "side", "edges", "edge"}) : 
-                 "The platform is surrounded on all sides by "    
+         ({"sides", "side", "edges", "edge"}) :
+                 "The platform is surrounded on all sides by "
                  "%^RED%^bubbling lava.%^RESET%^",
- 
-         ({"pool", "pool of lava", "lava", "bubbling lava"}) : 
-                 (:this_object(), "look_lava":),       
-         
+
+         ({"pool", "pool of lava", "lava", "bubbling lava"}) :
+                 (:this_object(), "look_lava":),
+
          ({"lights", "light", "floating lights", "floating light"}) :
               (:this_object(), "look_lights":),
          ({"tables", "table"}) :
@@ -50,7 +50,7 @@ void create() {
       ]) );
     set_exits( ([ "square" : "/domains/Praxis/square" ]) );
     }
- 
+
 void init() {
     room::init();
     add_action("cmd_pour", "pour");
@@ -68,17 +68,17 @@ void start_party(string msg) {
     __PartyTime = 1;
     call_out("deny_entry", 120);
 }
- 
-static void deny_entry() { __EntryAllowed = 0; }
- 
+
+protected void deny_entry() { __EntryAllowed = 0; }
+
 int query_party_time() { return __PartyTime; }
- 
+
 int query_entry_allowed() { return __EntryAllowed; }
- 
+
 string look_lava(string unused)
   {
-    x=random(3)+1;   
-    
+    x=random(3)+1;
+
     if(x==1)
       {
        message("info",
@@ -87,14 +87,14 @@ string look_lava(string unused)
          "%^RESET%^",
          environment(this_player()));
       }
-      
+
     if(x==2)
       {
        message("info",
          "%^RED%^A jet of flame falres from the lava and casts the room "
          "in red-hued light.%^RESET%^", environment(this_player()));
       }
- 
+
     if(x==3)
       {
        message("info",
@@ -102,7 +102,7 @@ string look_lava(string unused)
          "gushes up from beneath it.%^RESET%^",
          environment(this_player()));
       }
- 
+
     if(x==4)
       {
        message("info",
@@ -110,46 +110,46 @@ string look_lava(string unused)
          "purple.%^RESET%^",
          environment(this_player()));
       }
- 
+
     return("The lava is constantly shifting and bubbling. You can see large "
            "chunks of rock floating within it. ");
    }
- 
- 
+
+
 string look_lights(string unused)
   {
     x=random(3)+1;
- 
+
     if(x==1)
       {
        return(
-         "A pretty %^YELLOW%^yellow%^RESET%^ orb drifts near to you and casts " 
+         "A pretty %^YELLOW%^yellow%^RESET%^ orb drifts near to you and casts "
          "a cheery glow on you. ");
       }
- 
+
     if(x==2)
       {
        return(
-         "A pretty %^BLUE%^blue%^RESET%^ orb drifts near to you and casts " 
+         "A pretty %^BLUE%^blue%^RESET%^ orb drifts near to you and casts "
          "a mellow glow on you. ");
       }
- 
+
     if(x==3)
       {
        return(
-         "A pretty %^MAGENTA%^purple%^RESET%^ orb drifts near to you and casts " 
-         "a purple glow over your body. "); 
+         "A pretty %^MAGENTA%^purple%^RESET%^ orb drifts near to you and casts "
+         "a purple glow over your body. ");
       }
- 
+
     if(x==4)
       {
        return(
-         "A pretty %^RED%^red%^RESET%^ orb drifts near to you and casts " 
-         "a rosy glow over your body. "); 
+         "A pretty %^RED%^red%^RESET%^ orb drifts near to you and casts "
+         "a rosy glow over your body. ");
       }
  }
- 
- 
+
+
  int look_treat()
    {
      message("other_action",
@@ -162,7 +162,7 @@ string look_lights(string unused)
        "The sky is the limit!", this_player());
      return 1;
    }
- 
+
 int cmd_pour(string str) {
     object ob;
     string *words;
@@ -182,7 +182,7 @@ int cmd_pour(string str) {
     ob->set_long("A nice drink created by "+
       (string)this_player()->query_cap_name()+".");
     ob->set_strength(random(30)+2);
-    ob->set_drink("$N drink $O.", 
+    ob->set_drink("$N drink $O.",
       "$N drinks $O poured by "+(string)this_player()->query_cap_name()+".");
     this_player()->add_hp(-2);
     if(ob->move(this_player())) {

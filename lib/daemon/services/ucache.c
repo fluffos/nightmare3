@@ -32,10 +32,10 @@ void eventReceiveUcacheUpdate(mixed *packet) {
     ui->TimeStamp = time();
 }
 
-static void eventSendChannelUserRequest(string who, string where) {
+protected void eventSendChannelUserRequest(string who, string where) {
     string pl;
 
-    INTERMUD_D->eventWrite( ({ "chan-user-req", 5, mud_name(), 0, where, 0, 
+    INTERMUD_D->eventWrite( ({ "chan-user-req", 5, mud_name(), 0, where, 0,
 			       who }) );
 }
 
@@ -57,7 +57,7 @@ void eventDisplayUcache(object agent) {
     agent->eventPage(lines);
 }
 
-static void eventCompactUcache() {
+protected void eventCompactUcache() {
     int ts = time() - (UCACHE_INFO_LIFETIME * 3600 * 24);
 
     foreach(string mud, mapping uc in Ucache) {

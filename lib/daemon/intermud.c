@@ -28,7 +28,7 @@ private mapping Banned;
 private mixed *Nameservers;
 private  nosave int Connected, Tries;
 
-static void create() {
+protected void create() {
     client::create();
     Connected = 0;
     Password = 0;
@@ -50,7 +50,7 @@ static void create() {
 }
 
 
-static void Setup() {
+protected void Setup() {
     string ip;
     int port;
 
@@ -79,7 +79,7 @@ void eventClearVars(){
     save_object(SAVE_INTERMUD);
 }
 
-static void eventRead(mixed *packet) {
+protected void eventRead(mixed *packet) {
     mixed val;
     string cle;
     object boss = find_player("bravo");
@@ -222,7 +222,7 @@ static void eventRead(mixed *packet) {
     }
 }
 
-static void eventSocketClose() {
+protected void eventSocketClose() {
     int extra_wait;
     //debug_message("hmm");
     extra_wait = (Tries++) * 20;
@@ -231,7 +231,7 @@ static void eventSocketClose() {
     call_out( (: Setup :), 20 + extra_wait);
 }
 
-static void eventConnectionFailure() {
+protected void eventConnectionFailure() {
     if( Connected ) return;
     //debug_message("Failed to find a useful name server.");
     error("Failed to find a useful name server.\n");

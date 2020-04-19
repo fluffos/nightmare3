@@ -9,7 +9,7 @@
 
 inherit DAEMON;
 
-private static int load (string str) 
+private int load (string str)
 {
   string res;
   res = catch (call_other(str,"???"));
@@ -18,15 +18,15 @@ private static int load (string str)
   return 1;
 }
 
-int cmd_pupdate (string str) 
+int cmd_pupdate (string str)
 {
   object ob, bag, thing, next_thing;
   int i;
-  
+
   seteuid("TEMP");
   if (!str) {
     ob = environment (previous_object());
-    if (ob && environment(ob)) 
+    if (ob && environment(ob))
       {
 	write("Not in a room.\n");
 	return 1;
@@ -34,20 +34,20 @@ int cmd_pupdate (string str)
     str = "/" + file_name(ob);
   }
    str = absolute_path((string)this_player()->get_path(),str);
-  if (!str) 
+  if (!str)
     {
       notify_fail ("*Error in update\n");
       return 0;
     }
   ob = find_object(str);
-  if (!ob) 
+  if (!ob)
     {
-      if (file_size(str+".c") < 0) 
+      if (file_size(str+".c") < 0)
 	{
 	  write("Invalid file or directory.\n");
 	  return 1;
 	}
-      if (!load(str)) 
+      if (!load(str))
 	{
 	  write("No such object.\n");
 	}
@@ -56,7 +56,7 @@ int cmd_pupdate (string str)
   /* save everything in the room first... */
   bag = clone_object("/std/container");
   thing = first_inventory(ob);
-  while (thing) 
+  while (thing)
     {
       next_thing = next_inventory(thing);
       thing->move(bag);
@@ -68,12 +68,12 @@ int cmd_pupdate (string str)
   bag->move(str);
   ob = find_object(str);
   thing = first_inventory(bag);
-  while (thing) 
+  while (thing)
     {
       next_thing = next_inventory(thing);
-      if (ob) 
+      if (ob)
 	thing->move(ob);
-      else 
+      else
 	{
 	  thing->move("/domains/standard/void");
 	  tell_object(thing,"The room you are in dissolves into a mass of " +
@@ -82,7 +82,7 @@ int cmd_pupdate (string str)
 	}
       thing = next_thing;
     }
-  
+
   destruct(bag);
   return 1;
 }

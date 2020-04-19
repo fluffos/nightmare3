@@ -14,8 +14,8 @@ inherit EXITS;
 inherit ITEMS;
 inherit SENSES;
 
-static private int __ResetNumber;
-static private string __DayLong, __NightLong;
+nosave private int __ResetNumber;
+nosave private string __DayLong, __NightLong;
 
 void create() {
     container::create();
@@ -27,7 +27,7 @@ void create() {
     call_out("reinitiate", 0);
 }
 
-static void reset() {
+protected  void reset() {
     container::reset();
     __ResetNumber++;
 }
@@ -42,7 +42,7 @@ void set_short(string str) { container::set_short(str); }
 
 void set_long(string str) { container::set_long(str); }
 
-string query_short() { 
+string query_short() {
     return container::query_short();
 }
 
@@ -72,7 +72,7 @@ string query_extra_long() {
 }
 
 int query_reset_number() { return __ResetNumber; }
- 
+
 int move(mixed dest) { return MOVE_NOT_ALLOWED; }
 
 string *query_id() { return items::query_id(); }

@@ -30,7 +30,7 @@ varargs string query_long(string val);
 int query_wc();
 int move(mixed dest);
 int remove();
-static void go_dark();
+protected  void go_dark();
 int check_lit(object ob);
 int cmd_light(string str);
 int cmd_extinguish(string str);

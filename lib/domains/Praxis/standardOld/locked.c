@@ -15,11 +15,11 @@ void create() {
     set_long(
 	"You have been assimilated.\n"
 	"From this time on, you will service the Borg.");
-    set_exits( 
+    set_exits(
 	      (["square" : "/domains/Praxis/square"]) );
 }
 
-static int any_hook(string str) {
+protected int any_hook(string str) {
     message("prompt", sprintf("\n(%s) Password: ", mud_name()),
       this_player());
     return 1;

@@ -10,8 +10,8 @@
 
 inherit OBJECT;
 
-static private string __BoardID;
-static private string *__EditOK;
+nosave private string __BoardID;
+nosave private string *__EditOK;
 
 void create() {
     Object::create();
@@ -33,7 +33,7 @@ void init() {
     add_action("cmd_save", "save");
 }
 
-static private int valid_edit(string author) {
+ private int valid_edit(string author) {
     string *allowed;
     string who;
 
@@ -58,7 +58,7 @@ int cmd_post(string str) {
     return 1;
 }
 
-static void begin_post(string cmd, string subj, string file, function f) {
+protected void begin_post(string cmd, string subj, string file, function f) {
     if(cmd == "" || !cmd) cmd = "n";
     else cmd = cmd[0..0];
     if(cmd != "n" && cmd != "e") {
@@ -95,7 +95,7 @@ void end_post(mixed *args) {
     }
     else rm(file);
     if(!args[1])
-      BBOARD_D->add_post(query_board_id(), 
+      BBOARD_D->add_post(query_board_id(),
         (string)this_player()->query_CapName(), args[0], msg);
     else {
         mapping mail;
@@ -109,8 +109,8 @@ int cmd_read(string str) {
 
     maxi = sizeof(posts = (mapping *)BBOARD_D->query_posts(query_board_id()));
     if(!str) {
-        for(i=0, x = -1; i<maxi; i++) 
-          if(member_array((string)this_player()->query_name(), 
+        for(i=0, x = -1; i<maxi; i++)
+          if(member_array((string)this_player()->query_name(),
             posts[i]["read"]) == -1) {
               x = i;
               break;
@@ -119,7 +119,7 @@ int cmd_read(string str) {
     }
     else if(!(x = to_int(str))) return notify_fail("Read what?\n");
     else x--;
-    if(x < 0 || x >= sizeof(posts)) 
+    if(x < 0 || x >= sizeof(posts))
       return notify_fail("Invalid post number.\n");
     str = "Post number "+(x+1)+" by "+posts[x]["author"]+"...\n";
     str += posts[x]["post"];
@@ -164,7 +164,7 @@ void continue_mail(mapping post, string subj, string file) {
     input_to("check_include_text", subj, file, post, 1);
 }
 
-static void check_include_text(string ans, string subj, string file, mapping post, int mail) {
+protected void check_include_text(string ans, string subj, string file, mapping post, int mail) {
     string msg;
 
     if(ans == "" || !ans) ans = "n";
@@ -173,8 +173,8 @@ static void check_include_text(string ans, string subj, string file, mapping pos
         msg = post["author"] + " once wrote...\n>";
         msg += implode(explode(post["post"], "\n"), "\n> ")+"\n";
         write_file(file, msg);
-    }    
-    this_player()->edit(file, (: end_post :), (: abort_edit :), 
+    }
+    this_player()->edit(file, (: end_post :), (: abort_edit :),
       ({ subj, (mail ? post : 0) }));
 }
 
@@ -182,7 +182,7 @@ int cmd_remove(string str) {
     mapping post;
     int x;
 
-    if((x = to_int(str)) < 1 || 
+    if((x = to_int(str)) < 1 ||
       x > (int)BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
     post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
@@ -198,7 +198,7 @@ int cmd_edit(string str) {
     string file;
     int x;
 
-    if((x = to_int(str)) < 1 || 
+    if((x = to_int(str)) < 1 ||
       x > (int)BBOARD_D->query_number_posts(query_board_id()))
         return notify_fail("Invalid post number.\n");
     post = (mapping)BBOARD_D->query_post(query_board_id(), x-1);
@@ -229,7 +229,7 @@ void end_edit(mixed *args) {
       (string)this_player()->query_CapName(), args[0], msg);
     message("system", "Message posted!", this_player());
 }
-    
+
 varargs string query_long(string str) {
     mapping *posts;
     string msg;
@@ -259,7 +259,7 @@ string query_board_id() { return __BoardID; }
 string query_board_time(int x) {
     string date, day, mon, year, hour, ret;
 
-    if(sscanf(ctime(x), "%s %s  %s %s %s", day, mon, date, hour, year) !=5) 
+    if(sscanf(ctime(x), "%s %s  %s %s %s", day, mon, date, hour, year) !=5)
         sscanf(ctime(x), "%s %s %s %s %s", day, mon, date, hour, year);
 
     sscanf(hour, "%s:%s:%*s", hour, ret);

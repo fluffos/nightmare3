@@ -13,7 +13,7 @@ inherit DAEMON;
 
 private string __Owner;
 private mapping *__Posts;
-static private string __CurrentID;
+nosave private string __CurrentID;
 
 void create() {
     daemon::create();
@@ -23,21 +23,21 @@ void create() {
     __Posts = ({});
 }
 
-static private void save_board() {
+private void save_board() {
     if(!__CurrentID) return;
     if(!unguarded((: file_exists,DIR_BOARDS+"/"+__CurrentID+__SAVE_EXTENSION__ :))){
         int i;
-        
+
         if(!sizeof(__Posts)) return;
         i = strlen(__CurrentID);
-        while(i--) 
+        while(i--)
           if((__CurrentID[i] < 'a' || __CurrentID[i] > 'z') && __CurrentID[i] != '_')
             error("Illegal bulletin board id.");
     }
     unguarded((: save_object, DIR_BOARDS+"/"+__CurrentID :));
 }
 
-static private void restore_board() {
+private void restore_board() {
     if(!__CurrentID) return;
     if(!unguarded((: file_exists, DIR_BOARDS+"/"+__CurrentID+__SAVE_EXTENSION__ :))) {
         __Owner = query_privs(previous_object(0));
@@ -46,7 +46,7 @@ static private void restore_board() {
     else unguarded((: restore_object, DIR_BOARDS+"/"+__CurrentID :));
 }
 
-static private int valid_access() {
+private int valid_access() {
     string str;
 
     if(__Owner == PRIV_SECURE && !((int)master()->valid_access(({}))))
@@ -103,7 +103,7 @@ mapping query_post(string id, int post) {
     return copy(__Posts[post]);
 }
 
-mapping *query_posts(string id) { 
+mapping *query_posts(string id) {
     if(__CurrentID != id) {
         __CurrentID = id;
         restore_board();

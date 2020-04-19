@@ -13,10 +13,10 @@
 
 private string __CurrentWorkingDirectory;
 private mapping __Nicknames, __Aliases, __Xverbs;
-static private int __CWDCount, __CWDBottom, __CWDTop, __CmdNumber;
-static private int __HistoryCount, __HistoryBottom, __HistoryTop, __HistorySize;
-static private string __Prompt;
-static private string *__Stack, *__History;
+nosave private int __CWDCount, __CWDBottom, __CWDTop, __CmdNumber;
+nosave private int __HistoryCount, __HistoryBottom, __HistoryTop, __HistorySize;
+nosave private string __Prompt;
+nosave private string *__Stack, *__History;
 
 void create() {
     __Nicknames = ([]);
@@ -349,15 +349,15 @@ nomask  private  void process_request(string request, string xtra) {
 	}
 }
 
-static int request_vis(object ob) {
+protected  int request_vis(object ob) {
     return (userp(ob) && !((int)ob->query_invis(this_object())));
   }
 
-static string user_names(object ob) {
+protected  string user_names(object ob) {
     return (string)ob->query_cap_name();
   }
 
-static private int set_cwd(string str) {
+ private int set_cwd(string str) {
     int x;
 
     if(!str || str == "") str = user_path(query_name());
@@ -381,7 +381,7 @@ static private int set_cwd(string str) {
     return 1;
 }
 
-static private void pushd(string str) {
+ private void pushd(string str) {
     if(__CWDCount++ == DIRECTORY_STACK_SIZE) {
         __CWDCount--;
         __CWDBottom = (++__CWDBottom) % DIRECTORY_STACK_SIZE;
@@ -390,7 +390,7 @@ static private void pushd(string str) {
     __CWDTop = (++__CWDTop) % DIRECTORY_STACK_SIZE;
 }
 
-static private string popd() {
+ private string popd() {
     if(!__CWDCount) return 0;
     __CWDCount--;
     return __Stack[--__CWDTop];

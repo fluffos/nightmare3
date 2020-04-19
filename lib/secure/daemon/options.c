@@ -15,7 +15,7 @@ inherit DAEMON;
 
 private mapping __MyGroups;
 private mapping __Options;
-static private string __Owner;
+nosave private string __Owner;
 
 void create() {
     daemon::create();
@@ -25,7 +25,7 @@ void create() {
     __Owner = 0;
 }
 
-static private int valid_access() {
+ private int valid_access() {
     switch(base_name(previous_object(0))) {
         case OB_POSTAL: case FOLDERS_D: case LETTERS_D:
         case LOCALPOST_D: case REMOTEPOST_D: case OPTIONS_D:
@@ -51,7 +51,7 @@ void assure_box_exists(string who) {
     unguarded((: save_object, file+"/postalrc" :));
 }
 
-static private void load_options(string who) {
+ private void load_options(string who) {
     string file;
 
     if(who == __Owner) return;
@@ -64,7 +64,7 @@ static private void load_options(string who) {
     unguarded((: restore_object, file :));
   }
 
-static private void save_options() {
+ private void save_options() {
     string file;
 
     file = DIR_POSTAL+"/"+__Owner[0..0]+"/"+__Owner+"/postalrc";
@@ -77,7 +77,7 @@ void set_option(string who, string option, mixed value) {
     __Options[option] = value;
     save_options();
 }
-                                                                             
+
 mixed query_option(string who, string option) {
     string tmp;
 

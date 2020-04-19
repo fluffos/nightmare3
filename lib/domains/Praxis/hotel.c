@@ -1,7 +1,7 @@
 /*    /d/standard/hotel.c
  *    from Nightmare IV
  *    a place to stay for rest and other things
- *    created by Descartes of Borg (what a cutie!) 
+ *    created by Descartes of Borg (what a cutie!)
  *    and Lassondra@Nightmare 940424
  */
 
@@ -15,9 +15,9 @@ int query_occupied(int chambre);
 string query_key_id(int chambre);
 object query_room(int chambre);
 void check_out();
-static private void random_key(int chambre);
+private void random_key(int chambre);
 
-static private mapping __Rooms;
+nosave private mapping __Rooms;
 
 void create() {
     int x;
@@ -41,7 +41,7 @@ void create() {
 		 "carpet" : "The carpet is in good shape, although "
 		 "it is a bit worn in spots. There is a golden "
 		 "symbol of the hotel standing in the center of it.",
-		 ({ "wall", "walls" }) : 
+		 ({ "wall", "walls" }) :
 		 "The walls have been painted white with some gold "
 		 "trim on all the edges.",
 	      ({ "doors", "door" }) :

@@ -17,7 +17,7 @@ varargs void help(string topic, string category, int menu) {
     else cmd_help(topic, category, menu);
 }
 
-static void help_menu(string category, string *topics, int ind) {
+protected void help_menu(string category, string *topics, int ind) {
     string tmp;
     int i, maxi, x;
 
@@ -62,7 +62,7 @@ static void help_menu(string category, string *topics, int ind) {
     input_to("select_topic", category, topics, ind);
 }
 
-static void select_topic(string str, string category, string *topics,int ind) {
+protected void select_topic(string str, string category, string *topics,int ind) {
     if(str == "") {
         if(ind+40 < sizeof(topics)) help_menu(category, topics, ind+40);
         else help_menu(category, topics, ind);
@@ -75,7 +75,7 @@ static void select_topic(string str, string category, string *topics,int ind) {
     else help(str, category, 1);
   }
 
-static string *query_categories() {
+protected string *query_categories() {
     string *tmp;
 
     tmp = ({ "*player general", "*player commands", "*abilities" });
@@ -84,13 +84,13 @@ static string *query_categories() {
       tmp += ({ "*high mortal general", "*high mortal commands" });
     if(ambassadorp(this_player()))
       tmp += ({ "*ambassador general", "*ambassador commands" });
-    if(creatorp(this_player())) 
+    if(creatorp(this_player()))
       tmp += ({ "*creator general", "*creator commands" });
-    if(archp(this_player())) tmp += ({ "*admin commands" }); 
+    if(archp(this_player())) tmp += ({ "*admin commands" });
     return tmp;
   }
 
-static string *query_topics(string category) {
+protected string *query_topics(string category) {
     string tmp;
 
     switch(category) {
@@ -145,7 +145,7 @@ void cmd_help(string topic, string category, int menu) {
             message("help", sprintf("Category %s not available.",
               category), this_player());
             if(menu) {
-                message("prompt", "\nHit <return> to continue: ", 
+                message("prompt", "\nHit <return> to continue: ",
                   this_player());
                 input_to("menu_return", category);
 	      }
@@ -184,7 +184,7 @@ void cmd_help(string topic, string category, int menu) {
       }
   }
 
-static int find_help(string topic, string category, int menu) {
+protected int find_help(string topic, string category, int menu) {
     object ob;
     string str;
     mixed tmp;
@@ -219,16 +219,16 @@ static int find_help(string topic, string category, int menu) {
         else if(file_exists(tmp = DIR_SECURE_AMBASSADOR_CMDS+"/_"+topic+".c") &&
           (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;
         else if(file_exists(tmp = DIR_SECURE_CREATOR_CMDS+"/_"+topic+".c") &&
-         (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;     
+         (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;
         else return 0;
         break;
     case "*ambassador general":
-        if(file_exists(tmp = DIR_AMBASSADOR_CMDS+"/_"+topic+".c") &&       
-          (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;     
+        if(file_exists(tmp = DIR_AMBASSADOR_CMDS+"/_"+topic+".c") &&
+          (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;
         else if(file_exists(tmp = DIR_SECURE_AMBASSADOR_CMDS+"/_"+topic+".c") &&
-          (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;     
+          (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;
         else return 0;
-        break; 
+        break;
     case "*ambassador commands":
         if(file_exists(tmp = DIR_AMBASSADOR_CMDS+"/_"+topic+".c") &&
           (ob = load_object(tmp)) && function_exists("help", ob)) tmp = ob;
@@ -239,7 +239,7 @@ static int find_help(string topic, string category, int menu) {
     case "*high mortal general":
         if(!file_exists(tmp = DIR_HM_HELP+"/"+topic)) return 0;
         break;
-    case "*high mortal commands":  
+    case "*high mortal commands":
         if(!file_exists(tmp = DIR_HM_CMDS+"/_"+topic+".c")) return 0;
         if(!(ob = load_object(tmp)) || !function_exists("help", ob))
           return 0;
@@ -259,11 +259,11 @@ static int find_help(string topic, string category, int menu) {
         if(!(ob = load_object(tmp)) || !function_exists("help", ob))
           return 0;
         tmp = ob;
-        break; 
+        break;
       }
     if(!(int)this_player()->query_env("NO_CLEAR"))
     message("info", sprintf("\n%%^INITTERM%%^Topic: %%^GREEN%%^%s"
-      "%%^RESET%%^  \t%s System Help \tCategory: %%^GREEN%%^%s\n", 
+      "%%^RESET%%^  \t%s System Help \tCategory: %%^GREEN%%^%s\n",
       topic, mud_name(), category), this_player());
     else
     message("info", sprintf("\nTopic: %%^GREEN%%^%s"
@@ -281,7 +281,7 @@ static int find_help(string topic, string category, int menu) {
     return 1;
   }
 
-static void menu_return(string duh, string category) {
+protected void menu_return(string duh, string category) {
     if(duh != "q") help(category);
 }
 

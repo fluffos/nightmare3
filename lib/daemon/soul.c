@@ -11,22 +11,22 @@
 #include <security.h>
 
 private mapping __Soul;
-static private string __Adj, __Chunk;
-static private object __CurrentTarget;
+nosave private string __Adj, __Chunk;
+nosave private object __CurrentTarget;
 
-static private void become_emotional(mapping info, string adj, object *who);
-static private void compile_soul(string str);
-static private string compile_message(mixed *parts, object *targets);
-static private string remove_whitespace(string str);
-static string filter_stuff(mixed *parts, object *targets);
-static private void save_soul();
-static private void restore_soul();
-static string handle_names(object ob);
-static private void compile_file(string str);
-static private void parse_assoc(mapping borg);
-static private mixed parse_chunk();
-static private mapping parse_mapping();
-static private string *parse_array();
+private void become_emotional(mapping info, string adj, object *who);
+private void compile_soul(string str);
+private string compile_message(mixed *parts, object *targets);
+private string remove_whitespace(string str);
+protected string filter_stuff(mixed *parts, object *targets);
+private void save_soul();
+private void restore_soul();
+protected string handle_names(object ob);
+private void compile_file(string str);
+private void parse_assoc(mapping borg);
+private mixed parse_chunk();
+private mapping parse_mapping();
+private string *parse_array();
 
 void create() {
     string *files;
@@ -144,8 +144,8 @@ void become_emotional(mapping info, string adj, object *who) {
     __Adj = adj;
     __CurrentTarget = 0;
     message("emote", compile_message(info["mymsg"], who), this_player());
-    if(!who || !sizeof(who)) 
-      message("emote", compile_message(info["theirmsg"], ({})), 
+    if(!who || !sizeof(who))
+      message("emote", compile_message(info["theirmsg"], ({})),
         environment(this_player()), ({ this_player() }));
     else message("emote", compile_message(info["theirmsg"], who),
       environment(this_player()), ({ this_player() }) + who);
@@ -174,11 +174,11 @@ string compile_names(object *who) {
       ", ") + " and " + handle_names(who[0]);
   }
 
-static void save_soul() {
+protected void save_soul() {
     save_object(SAVE_SOUL);
 }
 
-static private void restore_soul() {
+ private void restore_soul() {
     restore_object(SAVE_SOUL);
 }
 
@@ -214,93 +214,93 @@ string handle_part(mixed part, object *targets) {
   }
 
 mapping query_soul() { return copy(__Soul); }
- 
-static private void compile_file(string file) { 
-    string *cles; 
- 
-    if(!(file = read_file(file))) error("Failed to read file.\n"); 
+
+ private void compile_file(string file) {
+    string *cles;
+
+    if(!(file = read_file(file))) error("Failed to read file.\n");
     file = replace_string(file, "\t", "");
-    cles = map_array(explode(file, "\n"), "remove_indentation", this_object()); 
-    filter_array(explode(implode(cles, ""), "$$"), "decode_file",this_object()); 
-  } 
- 
-static void decode_file(string str) {
+    cles = map_array(explode(file, "\n"), "remove_indentation", this_object());
+    filter_array(explode(implode(cles, ""), "$$"), "decode_file",this_object());
+  }
+
+protected void decode_file(string str) {
     call_out("define_action", 0, str);
 }
- 
-static void define_action(string str) { 
+
+protected void define_action(string str) {
     __Chunk = remove_whitespace(str);
-    parse_assoc(__Soul); 
-  } 
- 
-static private void parse_assoc(mapping borg) { 
-    string str; 
-    mixed val; 
- 
-    if(sscanf(__Chunk, "(%s %s", str, __Chunk) < 2)  
-      error("Syntax error compiling file in parse_assoc().\n"); 
-    val = parse_chunk(); 
-    __Chunk = __Chunk[1..strlen(__Chunk)-1]; 
-    borg[str] = val; 
-  } 
- 
-static private mixed parse_chunk() { 
-    string str; 
- 
+    parse_assoc(__Soul);
+  }
+
+ private void parse_assoc(mapping borg) {
+    string str;
+    mixed val;
+
+    if(sscanf(__Chunk, "(%s %s", str, __Chunk) < 2)
+      error("Syntax error compiling file in parse_assoc().\n");
+    val = parse_chunk();
+    __Chunk = __Chunk[1..strlen(__Chunk)-1];
+    borg[str] = val;
+  }
+
+ private mixed parse_chunk() {
+    string str;
+
     __Chunk = remove_whitespace(__Chunk);
-    switch(__Chunk[0]) { 
-    case '*': return parse_mapping(); 
-    case '[': return parse_array(); 
-    case '(': return error("Syntax error compiling file in parse_chunk().\n"); 
-    } 
-    if(sscanf(__Chunk, "%s)%s", str, __Chunk) == 2) return str; 
-    error("sscanf() failed in parse_chunk().\n"); 
-  } 
- 
-static private mapping parse_mapping() { 
-    mapping borg; 
-    int i; 
- 
-    borg = ([]); 
-    if(!sscanf(__Chunk, "*(%s", __Chunk)) 
-        error("Failed: sscanf() in parse_mapping().\n"); 
+    switch(__Chunk[0]) {
+    case '*': return parse_mapping();
+    case '[': return parse_array();
+    case '(': return error("Syntax error compiling file in parse_chunk().\n");
+    }
+    if(sscanf(__Chunk, "%s)%s", str, __Chunk) == 2) return str;
+    error("sscanf() failed in parse_chunk().\n");
+  }
+
+ private mapping parse_mapping() {
+    mapping borg;
+    int i;
+
+    borg = ([]);
+    if(!sscanf(__Chunk, "*(%s", __Chunk))
+        error("Failed: sscanf() in parse_mapping().\n");
     while((__Chunk = remove_whitespace(__Chunk))[0] != ')') parse_assoc(borg);
-    __Chunk = __Chunk[1..strlen(__Chunk)-1]; 
-    return borg; 
-  } 
- 
-static private string *parse_array() { 
-    string str; 
- 
-    if(sscanf(__Chunk, "[%s]%s", str, __Chunk) != 2) 
-      error("Failed: sscanf() in parse_array().\n"); 
-    return map_array(explode(str, " "), "fix_macros", this_object()); 
-  } 
- 
-static mixed fix_macros(string foo) { 
-    if(foo[0] == '$') { 
-        switch(foo) { 
-        case "$ADJ": return ADJ; 
-        case "$TP_NAME": return TP_NAME; 
-        case "$OB_NAME": return OB_NAME; 
-        case "$TP_PRONOUN": return TP_PRONOUN; 
-        case "$OB_PRONOUN": return OB_PRONOUN; 
-        case "$TP_POSS": return TP_POSSESSIVE; 
-        case "$OB_POSS": return OB_POSSESSIVE; 
-        case "$TP_NPOSS": return TP_NPOSS; 
-        case "$OB_NPOSS": return OB_NPOSS; 
-        case "$TP_FOO": return TP_FOO; 
-        case "$OB_FOO": return OB_FOO; 
-	} 
-      } 
-    return foo; 
-  } 
- 
-static string remove_indentation(string str) { 
+    __Chunk = __Chunk[1..strlen(__Chunk)-1];
+    return borg;
+  }
+
+ private string *parse_array() {
+    string str;
+
+    if(sscanf(__Chunk, "[%s]%s", str, __Chunk) != 2)
+      error("Failed: sscanf() in parse_array().\n");
+    return map_array(explode(str, " "), "fix_macros", this_object());
+  }
+
+protected mixed fix_macros(string foo) {
+    if(foo[0] == '$') {
+        switch(foo) {
+        case "$ADJ": return ADJ;
+        case "$TP_NAME": return TP_NAME;
+        case "$OB_NAME": return OB_NAME;
+        case "$TP_PRONOUN": return TP_PRONOUN;
+        case "$OB_PRONOUN": return OB_PRONOUN;
+        case "$TP_POSS": return TP_POSSESSIVE;
+        case "$OB_POSS": return OB_POSSESSIVE;
+        case "$TP_NPOSS": return TP_NPOSS;
+        case "$OB_NPOSS": return OB_NPOSS;
+        case "$TP_FOO": return TP_FOO;
+        case "$OB_FOO": return OB_FOO;
+	}
+      }
+    return foo;
+  }
+
+protected string remove_indentation(string str) {
     str = remove_whitespace(str);
-    if(!(['(': 1, '[':1, '*':1 ])[str[0]]) return str; 
-    else return sprintf(" %s", str); 
-  } 
+    if(!(['(': 1, '[':1, '*':1 ])[str[0]]) return str;
+    else return sprintf(" %s", str);
+  }
 
 void recompile_soul() {
     string *files;
@@ -312,7 +312,7 @@ void recompile_soul() {
     save_soul();
 }
 
-static private string remove_whitespace(string str) {
+ private string remove_whitespace(string str) {
     while(sscanf(str, "    %s", str));
     sscanf(str, "  %s", str);
     sscanf(str, " %s", str);

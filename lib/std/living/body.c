@@ -13,11 +13,11 @@ inherit CONTAINER;
 
 mixed *deaths;
 mapping player_data, magic, severed, healing, body;
-static mapping wielded;
-static string target_limb;
+nosave mapping wielded;
+nosave string target_limb;
 string *limbs;
 int all_my_fingers;
-static int num_wielded;
+nosave int num_wielded;
 private int heal_rate;
 
 
@@ -98,7 +98,7 @@ void add_hp(int x) {
     if(player_data["general"]["hp"] > player_data["general"]["max_hp"]) player_data["general"]["hp"] = player_data["general"]["max_hp"];
     if(player_data["general"]["hp"] < 1) player_data["general"]["hp"] = 1;
 }
-void set_max_sp(int x) { 
+void set_max_sp(int x) {
     player_data["general"]["max_sp"] = x;
 }
 
@@ -109,7 +109,7 @@ void set_sp(int x) {
 }
 
 void add_sp(int x) {
-    if(!player_data["general"]["sp"])  
+    if(!player_data["general"]["sp"])
         set_sp(x);
     else player_data["general"]["sp"] += x;
     if(player_data["general"]["sp"] > query_max_sp())
@@ -125,7 +125,7 @@ void set_max_mp(int x) {
 
 int query_max_mp() { return magic["max points"]; }
 
-void set_mp(int x) { 
+void set_mp(int x) {
     if(!query_max_mp()) magic["max points"] = x;
     if(x > query_max_mp()) {
 	if(this_object()->is_player()) {
@@ -273,7 +273,7 @@ int query_is_limb(string limb) {
 
 int query_max_hp() { return player_data["general"]["max_hp"]; }
 
-int query_sp() { 
+int query_sp() {
     if(!player_data["general"]["sp"]) return 0;
     return player_data["general"]["sp"];
 }
@@ -339,7 +339,7 @@ string equip_weapon_to_limb(object weap, string limb1, string limb2) {
           return "You are wielding something with your "+limb2+".\n";
         if(member_array("shield", body[limb2]["armour"]) != -1)
           return "You cannot wield a weapon where you wear a shield.\n";
-        if(!body[limb2]["wieldable"]) 
+        if(!body[limb2]["wieldable"])
           return "You cannot wield anything with your "+limb2+".\n";
         body[limb2]["ac"] += (int)weap->query_ac();
         body[limb2]["weapons"] = weap;
@@ -392,9 +392,9 @@ string type_ok(string type, string limb) {
 	case "ring":
             i = 0;
             x = sizeof(body[limb]["armour"]);
-            while(x--) 
+            while(x--)
 		if(body[limb]["armour"][x] == "ring") i++;
-            if(i > all_my_fingers-1) 
+            if(i > all_my_fingers-1)
               return "You do not have that many fingers on your "+limb+".\n";
             else return 0;
 	    break;
@@ -477,7 +477,7 @@ string *query_wielding_limbs() {
     tmp = ({});
 
     for(i=0; i<sizeof(limbs); i++) {
-	if(body[limbs[i]]["wieldable"]) 
+	if(body[limbs[i]]["wieldable"])
 	    tmp += ({ limbs[i] });
     }
     return tmp;

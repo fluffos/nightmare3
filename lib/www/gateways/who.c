@@ -52,20 +52,20 @@ string gateway() {
     return ret;
 }
 
-static int filter_people(object ob) {
+protected int filter_people(object ob) {
     if(hiddenp(ob) || (int)ob->query_invis()) return 0;
     if(!((string)ob->query_title())) return 0;
     return 1;
 }
 
-static int filter_admin(object ob) { return archp(ob); }
+protected int filter_admin(object ob) { return archp(ob); }
 
-static int filter_creator(object ob) { 
+protected int filter_creator(object ob) {
     return (wizardp(ob) && !archp(ob));
 }
 
-static int filter_hm(object ob) { return high_mortalp(ob); }
+protected int filter_hm(object ob) { return high_mortalp(ob); }
 
-static int filter_mortal(object ob) {
+protected int filter_mortal(object ob) {
     return (!wizardp(ob) && !high_mortalp(ob));
 }

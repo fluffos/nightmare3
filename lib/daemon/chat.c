@@ -15,7 +15,7 @@ inherit DAEMON;
 #define MAGENTA "%^MAGENTA%^"
 #define RESET "%^RESET%^"
 
-static private mapping channels;
+nosave private mapping channels;
 
 int list_channel(string str);
 
@@ -43,7 +43,7 @@ void add_user(string *chans) {
 
     if(!userp(ob = previous_object())) return;
     i = sizeof(chans);
-    while(i--) { 
+    while(i--) {
         if(!channels[chans[i]]) channels[chans[i]] = ({});
          channels[chans[i]] = distinct_array(channels[chans[i]]+({ob}));
     }

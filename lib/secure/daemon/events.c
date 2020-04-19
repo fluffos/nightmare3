@@ -20,9 +20,9 @@ private mapping __Events;
 private  nosave int __InReboot;
 private  nosave string __TimeOfDay;
 private  nosave mapping __Almanac;
-private static function *__TimeChange;
+private nosave function *__TimeChange;
 
-static void Save();
+protected void Save();
 void change_sky();
 mapping almanac_data();
 int query_minutes(int x);
@@ -37,7 +37,7 @@ int query_week(int x);
 string query_time_of_day();
 void next_change();
 void configure_day();
-static void reboot();
+protected void reboot();
 
 void create() {
     daemon::create();
@@ -65,7 +65,7 @@ varargs void add_events(object ob, string fun, int when, mixed *args, int reg) {
     Save();
 }
 
-static void check_events() {
+protected void check_events() {
     string *events;
     int i, x;
 
@@ -89,11 +89,11 @@ static void check_events() {
     Save();
 }
 
-static void Save() {
+protected void Save() {
     unguarded((: save_object, SAVE_EVENTS :));
 }
 
-static void reboot() {
+protected void reboot() {
     catch(SHUT_D->reboot_mud(20));
     map_delete(__Events, file_name(this_object()));
     Save();

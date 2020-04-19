@@ -3,9 +3,9 @@
 //	code for allowing people to follow
 //	created by Descartes of Borg 15 february 1993
 
-static private string allowed_to_follow;
-static private object *followers;
-static private object following;
+nosave private string allowed_to_follow;
+nosave private object *followers;
+nosave private object following;
 
 object *query_followers() { return followers; }
 object query_following() { return following; }
@@ -40,7 +40,7 @@ int add_follower(object f) {
 }
 
 void remove_follower(object ob) {
-    if(followers && member_array(ob, followers) == -1) 
+    if(followers && member_array(ob, followers) == -1)
 	return;
     followers -= ({ ob });
     ob->set_following(0);
@@ -50,7 +50,7 @@ void clear_followers() {
     int i;
 
     if(!followers) return;
-    for(i=0; i<sizeof(followers); i++) 
+    for(i=0; i<sizeof(followers); i++)
 	if(followers[i]) followers[i]->set_following(0);
     followers = ({});
 }

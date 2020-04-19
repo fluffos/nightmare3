@@ -4,24 +4,24 @@
 
 inherit ROOM;
 
-static private object *old;
+nosave private object *old;
 
 void create() {
     ::create();
     set_property("no teleport", 1);
     set_short( "The freezer");
     set_long( "The local freezer.");
-    set_exits( 
+    set_exits(
 	      (["square" : "/domains/Praxis/square"]) );
     set_no_clean(1);
     call_out("clean_room", MAX_NET_DEAD_TIME);
 }
 
-static void clean_room() {
+protected void clean_room() {
     object *in_here, *to_clean;
     int i;
 
-    if(!sizeof(in_here = livings() & all_inventory(this_object()))) { 
+    if(!sizeof(in_here = livings() & all_inventory(this_object()))) {
         old = in_here;
         call_out("clean_room", MAX_NET_DEAD_TIME);
         return;

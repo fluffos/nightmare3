@@ -1,8 +1,8 @@
 #ifndef __ROOM_H
 #define __ROOM_H
 
-static void create();
-static void reset();
+protected  void create();
+protected  void reset();
 void init();
 void set_short(string str);
 void set_long(string str);

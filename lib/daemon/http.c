@@ -13,10 +13,10 @@
 
 inherit DAEMON;
 
-static private int __SocketHTTP;
-static private mapping __Sockets, __Activity;
+nosave private int __SocketHTTP;
+nosave private mapping __Sockets, __Activity;
 
-void create() { 
+void create() {
     daemon::create();
     set_no_clean(1);
     __Sockets = ([]);
@@ -25,7 +25,7 @@ void create() {
     call_out("clean_sockets", 180);
 }
 
-static void setup() {
+protected void setup() {
     if((__SocketHTTP=socket_create(STREAM,"read_callback","close_callback"))<0){
         log_file("httpd", "Failed to create socket.\n");
         return;
@@ -97,14 +97,14 @@ void resolve_incoming(string nom, string addr, int cle) {
       addr, (nom ? nom : "NOT RESOLVED")));
   }
 
-static private void http_error(int fd, mapping err) {
+private void http_error(int fd, mapping err) {
     string str;
 
     add_activity(fd, sprintf("ERROR: %s (%s)\n", err["error"], ctime(time())));
     retry(fd, str = read_file(err["file"]) ? str : "");
 }
 
-static private void add_activity(int fd, string act) {
+private void add_activity(int fd, string act) {
     if(!__Activity[fd]) __Activity[fd] = ({ act });
     else __Activity[fd] += ({ act });
 }
@@ -115,14 +115,14 @@ void close_connection(int fd) {
     maxi = sizeof(__Activity[fd]);
     if(!__Sockets[fd]["name"]) __Sockets[fd]["name"]=__Sockets[fd]["address"];
     for(i =0; i<maxi; i++)
-      log_file("httpd", sprintf("%s: %s", 
+      log_file("httpd", sprintf("%s: %s",
         __Sockets[fd]["name"], __Activity[fd][i]));
     map_delete(__Sockets, fd);
     map_delete(__Activity, fd);
     socket_close(fd);
   }
-    
-static void clean_sockets() {
+
+protected void clean_sockets() {
     int *cles;
     int i;
 
@@ -132,7 +132,7 @@ static void clean_sockets() {
     call_out("clean_sockets", 180);
 }
 
-static private void get_file(int fd, string file) {
+private void get_file(int fd, string file) {
     string *parts, *tmp;
     mixed str;
     string id, args;
@@ -145,7 +145,7 @@ static private void get_file(int fd, string file) {
     parts = explode(file = absolute_path("/", file), "/");
     if(!sizeof(parts)) file = sprintf("%s/index.html", DIR_WWW);
     else if(parts[0][0] == '~') {
-        parts[0] = sprintf("%spublic_html", 
+        parts[0] = sprintf("%spublic_html",
           user_path(parts[0][1..strlen(parts[0])-1]));
         file = implode(parts, "/");
       }
@@ -175,11 +175,11 @@ void retry(int fd, string str) {
     int res;
 
     if((res = socket_write(fd, str)) != EECALLBACK) {
-        if(res == EEWOULDBLOCK) call_out("retry", 10, fd, str); 
+        if(res == EEWOULDBLOCK) call_out("retry", 10, fd, str);
         else close_connection(fd);
     }
 }
-    
+
 
 int remove() {
     socket_close(__SocketHTTP);
@@ -201,7 +201,7 @@ int remove() {
         case "Sat": str = "Saturday, "; break;
         case "Sun": str = "Sunday, "; break;
     }
-    str = sprintf("%s%s-%s-%s %s GMT", str, parts[2], parts[1], 
+    str = sprintf("%s%s-%s-%s %s GMT", str, parts[2], parts[1],
       parts[4][2..3], parts[3]);
     return str;
 }

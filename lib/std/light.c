@@ -12,9 +12,9 @@ inherit WEAPON;
 private int __SourceRequired, __Strength, __Fuel, __Fire, __FuelRequired;
 private int __DisableCommands, __DisableWeapon, __BurntValue;
 private string __CmdLight, __CmdExtinguish;
-static private int __Lit, __TimeStamp;
-static private mixed __PreventPut;
-static private function __LightFunction, __ExtinguishFunction;
+nosave private int __Lit, __TimeStamp;
+nosave private mixed __PreventPut;
+nosave private function __LightFunction, __ExtinguishFunction;
 
 void create() {
     weapon::create();
@@ -39,9 +39,9 @@ void init() {
 
 varargs void set_light(int strength, string lightcmd, string extcmd) {
     if(!intp(strength)) error("Bad argument 1 to set_light().\n");
-    else if(lightcmd && !stringp(lightcmd)) 
+    else if(lightcmd && !stringp(lightcmd))
       error("Bad argument 2 to set_light().\n");
-    else if(extcmd && !stringp(extcmd)) 
+    else if(extcmd && !stringp(extcmd))
       error("Bad argument 3 to set_light().\n");
     __Strength = strength;
     if(lightcmd) __CmdLight = lightcmd;
@@ -66,7 +66,7 @@ int query_fire() { return __Fire; }
 
 void set_fuel(int x) { __Fuel = x; }
 
-void add_fuel(int x) { 
+void add_fuel(int x) {
     if(!query_fuel_required()) {
         __Fuel += x;
         if(__Fuel < 0) __Fuel = 0;
@@ -122,7 +122,7 @@ void set_lit(int x) {
         __TimeStamp = time();
         call_out("go_dark", query_fuel());
     }
-    __Lit = x; 
+    __Lit = x;
 }
 
 int query_lit() { return __Lit; }
@@ -136,7 +136,7 @@ void set_burnt_value(int x) { __BurntValue = x; }
 int is_weapon() { return !__DisableWeapon; }
 
 void set_prevent_put(mixed val) {
-    if(!stringp(val) && !functionp(val)) 
+    if(!stringp(val) && !functionp(val))
       error("Bad argument 1 to set_prevent_put().\n");
     __PreventPut = val;
 }
@@ -158,7 +158,7 @@ varargs string query_long(string val) {
       sprintf("\nThe %s is out of fuel.", query_name())));
   }
 
-int query_wc() { 
+int query_wc() {
     return (query_lit() ? weapon::query_wc() + 1 : weapon::query_wc());
   }
 
@@ -183,7 +183,7 @@ int remove() {
     return x;
 }
 
-static void go_dark() {
+protected  void go_dark() {
     object ob;
 
     if(ob = environment(this_object())) {

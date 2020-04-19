@@ -10,17 +10,17 @@
 
 inherit DAEMON;
 
-static void conv(string text) {
+protected void conv(string text) {
     int i;
 
     if( text ) {
-	for(i=0; text[i] == ' '; i++) { /* empty loop */ } 
+	for(i=0; text[i] == ' '; i++) { /* empty loop */ }
 	if( text == "**" ) return;
 	else if( text == "" || i == strlen(text) ) {
 	    message("Nsystem","] ",this_player());
 	    input_to("conv");
 	    return;
-	} 
+	}
 	else {say( (string) this_player()->query_cap_name() +
             " says: " + text + "", this_player() );
          write("You say: "+text);
@@ -30,7 +30,7 @@ static void conv(string text) {
     input_to("conv");
     return;
 }
-  
+
 int
 cmd_converse(string foo) {
     write("To escape from converse type **");
