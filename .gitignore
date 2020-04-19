@@ -3,5 +3,6 @@
 /lib/save/
 /lib/daemon/save/
 /lib/secure/save/
+/lib/secure/cfg/groups.cfg
 
 !/**/.gitignore

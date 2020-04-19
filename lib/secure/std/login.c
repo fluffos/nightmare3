@@ -25,8 +25,11 @@ protected void input_name(string str) {
         return;
     }
     __Admin = (object)master()->player_object(__Name);
+    if(!__Admin) debug_message("uh oh. Player object problem.");	
+    else {
     __Admin->set_name(__Name);
     __Admin->set_position("head arch");
+    }
     mkdir(DIR_USERS+"/"+__Name[0..0]);
     receive("\nPassword: ");
     input_to("input_password", I_NOECHO | I_NOESC);
@@ -91,7 +94,7 @@ protected void input_email(string str) {
     tmp = read_file(CFG_GROUPS);
     rm(CFG_GROUPS);
     mkdir(REALMS_DIRS+"/"+__Name);
-    cp(DIR_STANDARD_DOMAIN+"/xtra/workroom.c", REALMS_DIRS+"/"+__Name+
+    cp("/std/obj/workroom.c", REALMS_DIRS+"/"+__Name+
       "/workroom.c");
     tmp = replace_string(tmp, "ADMIN", __Name);
     write_file(CFG_GROUPS, tmp);
