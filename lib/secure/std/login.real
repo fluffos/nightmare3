@@ -354,9 +354,9 @@ protected int register_client() {
 }
 
 protected void input_protocol(string str) {
-    string class, client;
+    string str_class, client;
 
-    if(sscanf(str, "<%s>%s", class, client) != 2  || class != "protocol" ||
+    if(sscanf(str, "<%s>%s", str_class, client) != 2  || str_class != "protocol" ||
       member_array(client, SUPPORTED_CLIENTS) == -1 || client == "none")
         __Client = 0;
     else __Client = client;
