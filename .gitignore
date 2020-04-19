@@ -1,6 +1,5 @@
 /.idea
 /build
-/lib/log
 /lib/save/
 /lib/daemon/save/
 /lib/secure/save/
