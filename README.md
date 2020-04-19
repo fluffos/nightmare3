@@ -13,3 +13,13 @@ cd nightmare3
 ./run.sh
 
 ```
+
+# Play
+
+open http://localhost:8080 and play
+
+![image](https://user-images.githubusercontent.com/1256464/79697289-bed9a180-8236-11ea-9a9b-a738ee7ee6c8.png)
+
+# Contribution
+
+PRs are welcome!
