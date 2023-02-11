@@ -64,7 +64,7 @@ int move(mixed dest) {
       environment(this_object())->add_encumbrance(-query_mass());
     set_last_location(environment(this_object()));
     move_object(ob);
-if(!this_object()) return 0;
+    if(!this_object()) return MOVE_DESTRUCTED;
     environment(this_object())->add_encumbrance(query_mass());
     return MOVE_OK;
 }
