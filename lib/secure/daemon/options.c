@@ -41,6 +41,17 @@ void assure_box_exists(string who) {
     if(__Owner == who) return;
     file = DIR_POSTAL+"/"+who[0..0]+"/"+who+"/postalrc"+__SAVE_EXTENSION__;
     if(unguarded((: file_exists, file :))) return;
+    // DIR_POSTAL itself is assumed to already exist below (only its
+    // per-letter shard and per-player subdirectory get created), which is
+    // true on a long-running install where it was mkdir'd by hand once,
+    // long ago, but false on a fresh checkout of this repo -- mkdir()
+    // can't create a directory whose PARENT doesn't exist either, so
+    // every one of these calls silently no-ops and the final
+    // save_object() below fails ("Could not open .../postalrc.o.tmp for
+    // a save"), caught by the CATCH() around setup() so it never crashes
+    // a login, just repeats on every single one. Ensure the top level
+    // exists too, not just the two levels under it.
+    if(unguarded((: file_size, DIR_POSTAL :)) != -2) unguarded((: mkdir, DIR_POSTAL :));
     file = DIR_POSTAL+"/"+who[0..0];
     if(unguarded((: file_size, file :)) != -2) unguarded((: mkdir, file :));
     file = DIR_POSTAL+"/"+who[0..0]+"/"+who;
