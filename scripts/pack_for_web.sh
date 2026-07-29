@@ -23,6 +23,9 @@
 # Requires: emscripten's file_packager (emsdk on PATH), python3.
 
 set -euo pipefail
+set -x   # trace every command -- this is the only diagnostic available
+         # for a CI-only failure without repo-admin log access; strip once
+         # the pipeline has proven stable across a few real runs.
 
 SELF_DIR=$(cd "$(dirname "$0")" && pwd)
 REPO_ROOT=$(cd "$SELF_DIR/.." && pwd)
