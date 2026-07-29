@@ -58,6 +58,16 @@ varargs string get_stack( int x) {
 }
 
 string dump_socket_status() {
+#ifndef __PACKAGE_SOCKETS__
+    // The sockets package doesn't exist on this build (e.g. the WASM
+    // target, which has no real network stack at all -- see this
+    // project's build docs) -- socket_status() itself is an undefined
+    // function there, which fails to compile since this is a bare call,
+    // not a call_other, and this file lives in simul_efun (a compile
+    // failure here takes the whole boot down with it, not just this one
+    // admin utility).
+    return "(socket status unavailable on this build: no sockets package)\n";
+#else
     string ret;
     string *finalsocks, *sock_array = ({});
     int i, quant = sizeof(socket_status());
@@ -77,5 +87,6 @@ END;
     }
 
     return ret;
+#endif
 }
 
