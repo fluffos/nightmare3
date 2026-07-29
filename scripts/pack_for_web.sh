@@ -23,9 +23,13 @@
 # Requires: emscripten's file_packager (emsdk on PATH), python3.
 
 set -euo pipefail
-set -x   # trace every command -- this is the only diagnostic available
-         # for a CI-only failure without repo-admin log access; strip once
-         # the pipeline has proven stable across a few real runs.
+set -x   # trace every command -- helps whoever can actually read the raw
+         # CI log; combined with the ::notice:: checkpoints below (which
+         # surface as GitHub Actions *annotations*, readable through the
+         # public API even without repo-admin auth) so a failure's
+         # location is diagnosable either way. Strip once the pipeline
+         # has proven stable across a few real runs.
+note() { echo "::notice::pack_for_web: $*"; }
 
 SELF_DIR=$(cd "$(dirname "$0")" && pwd)
 REPO_ROOT=$(cd "$SELF_DIR/.." && pwd)
@@ -52,25 +56,33 @@ else
   done
 fi
 [ -n "$FILE_PACKAGER" ] || { echo "error: emscripten file_packager not found (emsdk on PATH?)" >&2; exit 1; }
+note "using FILE_PACKAGER=[$FILE_PACKAGER]"
 
 STAGE=$(mktemp -d "${TMPDIR:-/tmp}/nm3pack.XXXXXX")
 trap 'chmod -R u+w "$STAGE" >/dev/null 2>&1 || true; rm -rf "$STAGE" 2>/dev/null || true' EXIT
+note "staging in $STAGE"
 
 # --- 1. stage the mudlib tree (git-tracked files only: no local build/, save
 #        data, or other untracked cruft leaks into the published bundle) ----
 mkdir -p "$STAGE/mudlib"
-( cd "$REPO_ROOT" && git ls-files lib ) | while IFS= read -r rel; do
+FILE_COUNT=0
+while IFS= read -r rel; do
   dst="$STAGE/mudlib/${rel#lib/}"
   mkdir -p "$(dirname "$dst")"
   cp "$REPO_ROOT/$rel" "$dst"
-done
+  FILE_COUNT=$((FILE_COUNT + 1))
+done < <(cd "$REPO_ROOT" && git ls-files lib)
+note "step 1 done: staged $FILE_COUNT tracked files"
 
 # --- 2. recreate gitignored runtime-dir SHAPE (empty, no content) -----------
-grep -oE '^/lib/[A-Za-z0-9_./-]+/$' "$REPO_ROOT/.gitignore" 2>/dev/null | while IFS= read -r pat; do
+DIR_COUNT=0
+while IFS= read -r pat; do
   rel=${pat#/lib/}; rel=${rel%/}
   mkdir -p "$STAGE/mudlib/$rel"
-done
+  DIR_COUNT=$((DIR_COUNT + 1))
+done < <(grep -oE '^/lib/[A-Za-z0-9_./-]+/$' "$REPO_ROOT/.gitignore" 2>/dev/null || true)
 mkdir -p "$STAGE/mudlib/log"
+note "step 2 done: recreated $DIR_COUNT gitignored runtime dirs"
 
 # --- 3. rewrite the config's mudlib directory to the in-image path and pack
 #        it INSIDE the mudlib tree itself (config.fluffos.mount reads it as
@@ -84,12 +96,14 @@ if n1 != 1:
     sys.exit('error: expected exactly one "mudlib directory :" line, found %d' % n1)
 open(dst, 'w', encoding='utf-8', errors='surrogateescape').write(text)
 PYEOF
+note "step 3 done: wrote mudlib.cfg"
 
 # --- 4. pack with file_packager ---------------------------------------------
 mkdir -p "$OUT"
 (cd "$STAGE" && $FILE_PACKAGER "$OUT/mudlib.data" \
     --preload "mudlib@/mudlib" \
-    --js-output="$OUT/mudlib.js" >/dev/null)
+    --js-output="$OUT/mudlib.js")
+note "step 4 done: file_packager produced $OUT/mudlib.data + mudlib.js"
 
 # --- 5. boot config + driver + page -----------------------------------------
 cat > "$OUT/fluffos-boot.js" <<EOF
@@ -102,6 +116,7 @@ EOF
 cp "$DRIVER_DIR/fluffos.js" "$DRIVER_DIR/fluffos.wasm" "$DRIVER_DIR/telnet.js" "$OUT/"
 cp -r "$DRIVER_DIR/vendor" "$OUT/"
 cp "$DRIVER_DIR/index.html" "$OUT/index.html"
+note "step 5 done: driver + page copied into $OUT"
 
 SIZE=$(du -sh "$OUT" | cut -f1)
 echo "packed nightmare3 -> $OUT ($SIZE)"
