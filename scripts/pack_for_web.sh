@@ -41,6 +41,13 @@ fi
 
 DRIVER_DIR=$(cd "$1" && pwd)
 OUT=$2
+mkdir -p "$OUT"
+OUT=$(cd "$OUT" && pwd)   # must be absolute: step 4 below cd's into $STAGE first,
+                          # and a relative $OUT would then resolve against the
+                          # stage dir instead of the caller's cwd (this is why
+                          # CI, which passes a relative "site", failed at the
+                          # file_packager step while every local repro --
+                          # invoked with an absolute out dir -- passed clean)
 [ -f "$DRIVER_DIR/fluffos.js" ] && [ -f "$DRIVER_DIR/fluffos.wasm" ] || {
   echo "error: driver not found in $DRIVER_DIR (need fluffos.js + fluffos.wasm)" >&2; exit 1; }
 [ -f "$DRIVER_DIR/index.html" ] || { echo "error: $DRIVER_DIR/index.html not found" >&2; exit 1; }
@@ -99,7 +106,6 @@ PYEOF
 note "step 3 done: wrote mudlib.cfg"
 
 # --- 4. pack with file_packager ---------------------------------------------
-mkdir -p "$OUT"
 (cd "$STAGE" && $FILE_PACKAGER "$OUT/mudlib.data" \
     --preload "mudlib@/mudlib" \
     --js-output="$OUT/mudlib.js")
