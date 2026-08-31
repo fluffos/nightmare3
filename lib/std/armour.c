@@ -85,7 +85,7 @@ int wear(string str) {
         message("my_action", ret, this_player());
         return 1;
     }
-    if(functionp(armour_ private ["wear"])) {}
+    if(functionp(armour_static["wear"])) {}
     else if(stringp(armour_static["wear"]))
       message("my_action", armour_static["wear"], this_player());
     else message("my_action", "You wear "+query_short()+".", this_player());
@@ -107,7 +107,7 @@ int do_remove(string str) {
         message("my_action", "You are not wearing that!", this_player());
         return 1;
     }
-	if(functionp(armour_ private ["unwear"])){
+	if(functionp(armour_static["unwear"])){
 		if(!((*armour_static["unwear"])())) return 1;
 	}
     unwear();
@@ -178,7 +178,7 @@ void set_not_equipped() {
     if(armour_static["actual limbs"]) map_delete(armour_static, "actual limbs");}
 
 int remove() {
-    if(armour_static && armour_ private ["lit"]) {
+    if(armour_static && armour_static["lit"]) {
       if(environment(this_object()))
         environment(this_object())->add_property("light",-armour_static["lit"]);
         map_delete(armour_static, "lit");

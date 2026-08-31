@@ -18,10 +18,10 @@ object wield_func_ob, hit_func_ob;
 int decay_rate;
 string read_msg;
 
-status
+int
 check_weapon(object ob)
 {
-    status error;
+    int error;
     int i;
 
     error = 0;

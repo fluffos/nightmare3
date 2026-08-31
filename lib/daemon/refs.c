@@ -9,20 +9,20 @@ void set_refs( mapping refs ) { this_player()-> set_refs( refs ); }
 
 mapping get_refs() { return (mapping)this_player()-> get_refs(); }
 
-void set_ref( string ref, mixed val ) { this_player()-> set_ref( ref, val ); }
+void set_ref( string refnom, mixed val ) { this_player()-> set_ref( refnom, val ); }
 
-mixed get_ref( string ref ) { return (mixed)this_player()-> get_ref( ref ); }
+mixed get_ref( string refnom ) { return (mixed)this_player()-> get_ref( refnom ); }
 
 mixed resolv_ref( mixed a )
 {
   mixed ret;
-  string ref;
+  string refnom;
 
   if( !stringp( a ) ) return a;
-  if( !sscanf( a, "#%s", ref ) ) return a;
+  if( !sscanf( a, "#%s", refnom ) ) return a;
 // Nightmare does not support cwf
 // if( ref == "#" ) return (string)this_player()-> query( "cwf" );
-  if( undefinedp( ret = get_ref( ref ) ) ) return a;
+  if( undefinedp( ret = get_ref( refnom ) ) ) return a;
   return ret;
 }
 
@@ -63,7 +63,16 @@ mixed resolv_str( string a )
   {
     gtmp1 = resolv_str( sa );
     gtmp2 = resolv_str( sb );
-    if( objectp( tmp1 ) && stringp( tmp2 ) ) return (: gtmp1, gtmp2 :);
+    // NOTE: this branch was always unreachable in the original source --
+    // objectp(tmp1) can never be true here (tmp1 == the string arg `a`
+    // by this point, per the early "if (tmp1 != a) return tmp1;" above)
+    // and tmp2 is never assigned at all. Left as documented dead code;
+    // the old two-element "(: gtmp1, gtmp2 :)" closure literal (binding
+    // a runtime object+funcname pair) isn't expressible with this
+    // driver's closure syntax anyway (no symbol_function()-equivalent),
+    // and previously failed to even compile ("Can't give parameters to
+    // functional.") since gtmp1 is a bare global variable, not a call.
+    if( objectp( tmp1 ) && stringp( tmp2 ) ) return 0;
   }
   if( sscanf( a, "({%s})", sa ) )
   {

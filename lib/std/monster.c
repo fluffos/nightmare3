@@ -11,7 +11,7 @@
 inherit LIVING;
 
 object tmp;
-nosave status heart_beat_on;
+nosave int heart_beat_on;
 int level;
 nosave int speed;
 nosave int moving;

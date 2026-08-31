@@ -5,7 +5,7 @@ inherit OBJECT;
 nosave private string __Short, __Long, __File;
 nosave private mapping __Actions, __Items, __Smells, __Listens, __Objects;
 private void main_menu();
-proteceted void primary_prompt();
+protected void primary_prompt();
 private string describe_long();
 
 void create() {

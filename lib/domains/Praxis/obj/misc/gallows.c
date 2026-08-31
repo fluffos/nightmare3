@@ -4,10 +4,10 @@
 
 #include <std.h>
 
+inherit OBJECT;
+
 object hangman;
 void set_hangman(object who);
-
-inherit OBJECT;
 
 create() {
   ::create();
@@ -19,8 +19,9 @@ create() {
 }
 
 string long_func() {
-  string str, name;
-  
+  string str;
+  mixed name;
+
   str = "A large wooden platform with two upright timbers and "
     "a crossbeam with a rope and noose.";
   if(hangman) {
