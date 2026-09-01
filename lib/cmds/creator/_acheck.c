@@ -22,10 +22,10 @@ object wear_func_ob;
 int decay_rate;
 string read_msg;
 
-status
+int
 check_armour(object ob)
 {
-    status error;
+    int error;
     int i;
 
     error = 0;

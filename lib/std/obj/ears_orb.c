@@ -5,14 +5,14 @@
 
 #include <std.h>
 
+inherit OBJECT;
+
 void set_caster_level(int x);
 void set_caster(object who);
 void start_dest(int x);
 
 int caster_level;
 object caster;
-
-inherit OBJECT;
 
 void create() {
     ::create();

@@ -40,7 +40,7 @@ void init() {
 
 void set_short(string str) { container::set_short(str); }
 
-void set_long(string str) { container::set_long(str); }
+void set_long(mixed val) { container::set_long(val); }
 
 string query_short() {
     return container::query_short();

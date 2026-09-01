@@ -15,10 +15,10 @@ string long;
 string *destinations;
 mapping item;
 
-status
+int
 check_room(object ob) {
    int i;
-   status error;
+   int error;
    string message;
    string *items;
    string desc;

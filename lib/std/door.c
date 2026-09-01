@@ -43,7 +43,7 @@ void set_open(int state) { __Open = state; }
 
 int query_open() { return __Open; }
 
-static
+nosave
 varargs
 int
 open( string with )
@@ -71,7 +71,7 @@ open( string with )
   return 1;
 }
 
-static
+nosave
 int
 close()
 {
@@ -86,7 +86,7 @@ close()
   return 1;
 }
 
-static
+nosave
 int
 lock( string with )
 {
@@ -102,7 +102,7 @@ lock( string with )
   return 1;
 }
 
-static
+nosave
 int
 unlock( string with )
 {
@@ -119,7 +119,7 @@ unlock( string with )
 }
 
 
-static
+nosave
 int
 A_open( string arg )
 
@@ -140,7 +140,7 @@ A_open( string arg )
   return open();
 }
 
-static
+nosave
 int
 A_close( string arg )
 {
@@ -150,7 +150,7 @@ A_close( string arg )
   return close();
 }
 
-static
+nosave
 int
 A_lock( string arg )
 {
@@ -165,7 +165,7 @@ A_lock( string arg )
   return lock( key );
 }
 
-static
+nosave
 int
 A_unlock( string arg )
 {

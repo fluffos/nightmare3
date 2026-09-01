@@ -4,11 +4,11 @@
 //  Created by Manny@Nightmare  940901
  
 #include <std.h>
- 
+
+inherit OBJECT;
+
 object target;
 void set_target(object who);
- 
-inherit OBJECT;
  
 create() {
   ::create();
