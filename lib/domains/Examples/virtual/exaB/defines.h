@@ -4,7 +4,7 @@
 //             If you want to use the code in daemon.c for your own virtual
 //             area, just write your own defines.h then for you daemon.c do:
 //               #include "/mydir/defines.h"
-//               #include "/domains/Examples/virtual/exaB/daemon.c"
+//               #include "/domains/Examples/virtual/exaB/daemon.lpc"
 // 94-05-22 :  Pallando wrote this
 */
 #ifndef VIRTUAL_DEFINES_H
