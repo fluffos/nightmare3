@@ -52,7 +52,7 @@ void rehash(mixed val) {
     if (file_size(val[i]) != -2) continue;
     j = sizeof(choses = get_dir(val[i] + "/_*.lpc"));
     while (j--) {
-      choses[j] = choses[j][1..strlen(choses[j]) - 3];
+      choses[j] = choses[j][1..strlen(choses[j]) - 5];
       if (pointerp(__Cmds[choses[j]])) __Cmds[choses[j]] += ({ val[i] });
       else __Cmds[choses[j]] = ({ val[i] });
     }
