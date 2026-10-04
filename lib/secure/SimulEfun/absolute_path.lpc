@@ -22,13 +22,13 @@ string absolute_path(string curr, string newstr) {
   switch (newstr[0..0]) {
     case "~":
       if (newstr == "~" || newstr == "~/")
-        newstr = user_path((string)this_player()->query_name())[0..-2];
+        newstr = user_path((string)this_player()->query_name())[0..<2];
       else if (newstr[1..1] == "/")
         newstr = user_path((string)this_player()->query_name()) + newstr[2..len];
       else if (sscanf(newstr, "~%s/%s", name, rest) == 2)
         newstr = user_path(name) + rest;
       else
-        newstr = user_path(newstr[1..len])[0..-2];
+        newstr = user_path(newstr[1..len])[0..<2];
       break;
     case "^":
       newstr = "/domains/" + newstr[1..len];
