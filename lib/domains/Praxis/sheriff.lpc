@@ -54,7 +54,7 @@ void create() {
     "west": "/" + __DIR__ + "court_room" ]));
   x = (int)POLITICS_D->query_personnel("police");
   y = (int)POLITICS_D->query_spending("police");
-  if (x && !(tot = (y / x) / currency_rate("gold"))) return;
+  if (x && !(tot = to_int((y / x) / currency_rate("gold")))) return;
   for (i = 0, obs = allocate(x); i < x; i++)
     obs[i] = new("/" + __DIR__ + "obj/mon/police");
   obs->set_name("deputy");
@@ -136,7 +136,7 @@ object *clone_guards(int num) {
   x = (int)POLITICS_D->query_personnel("police");
   for (i = 0, obs = allocate(num); i < num; i++)
     obs[i] = new("/" + __DIR__ + "obj/mon/guard");
-  tot = (y / x) / currency_rate("gold");
+  tot = to_int((y / x) / currency_rate("gold"));
   tell_object(find_player("manny"), "tot = " + tot);
   obs->set_name("guard");
   obs->set_id(({ "guard", "city guard", "officer", "praxis guard" }));

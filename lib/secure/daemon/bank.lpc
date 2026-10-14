@@ -172,7 +172,8 @@ string *query_bank_accounts(string who) {
 mapping account_summary(string who) {
   mapping borg;
   string *banks, *currs;
-  int i, j, x;
+  int i, j;
+  float x;   // currency_rate() is a float (inflation moves it); as an int a rate below 1 was 0
 
   if (!((int)master()->valid_apply(({})))) return ([]);
   if (current != who) {
@@ -192,7 +193,7 @@ mapping account_summary(string who) {
       if (borg[currs[j]]) borg[currs[j]] += account[banks[i]][currs[j]];
       else borg[currs[j]] = account[banks[i]][currs[j]];
       x = currency_rate(currs[j]);
-      if (x) borg["base"] += account[banks[i]][currs[j]] / x;
+      if (x) borg["base"] += to_int(account[banks[i]][currs[j]] / x);
     }
   }
   return borg;
