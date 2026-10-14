@@ -82,11 +82,8 @@ void eventClearVars() {
 protected void eventRead(mixed *packet) {
   mixed val;
   string cle;
-  object boss = find_player("bravo");
 
-  if (boss) {
-    //tell_object(boss,"packs: "+identify(packet));
-  }
+  //object boss = find_player("bravo"); if (boss) tell_object(boss,"packs: "+identify(packet));
 
   //debug_message("packet: "+identify(packet));
 
@@ -124,7 +121,6 @@ protected void eventRead(mixed *packet) {
       if (sizeof(packet) != 8) {
         return;
       }
-      if (packet[6] == MudList->ID) {}
       if (packet[2] != Nameservers[0][0]) {
         return;
       }

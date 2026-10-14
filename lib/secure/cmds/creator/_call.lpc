@@ -111,7 +111,6 @@ do_call(object ob, string func, mixed args) {
   int i, s;
   string str;
   object shad;
-  function f;
 
   if (!function_exists(func, ob)) {
     // This needs #ifdef HAS_SHADOW (MudOS driver 0.9.17.3 onwards)

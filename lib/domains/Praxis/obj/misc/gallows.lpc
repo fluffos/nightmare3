@@ -5,6 +5,7 @@
 #include <std.h>
 
 inherit OBJECT;
+string long_func();
 
 object hangman;
 void set_hangman(object who);
@@ -14,7 +15,7 @@ create() {
   set_name("gallows");
   set_id(({ "gallows", "noose", "platform" }));
   set_short("the gallows");
-  set_long((: "long_func" :));
+  set_long((: long_func :));
   set_prevent_get("You cannot get that!");
 }
 

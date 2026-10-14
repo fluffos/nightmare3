@@ -211,7 +211,7 @@ protected void exec_user() {
     return;
   }
   if (!exec(__Player, this_object())) {
-    message("system", "\Problem connecting.\n", this_object());
+    message("system", "Problem connecting.\n", this_object());
     __Player->remove();
     destruct(this_object());
     return;

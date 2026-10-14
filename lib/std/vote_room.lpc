@@ -9,6 +9,7 @@
 #include <daemons.h>
 
 inherit ROOM;
+int go_west();
 
 void add_pre_exit_funcs() {
   string *dirs;
@@ -16,7 +17,7 @@ void add_pre_exit_funcs() {
 
   loop = sizeof(dirs = query_exits());
   while (loop--)
-    add_exit(dirs[loop], query_exit(dirs[loop]), (: "go_west" :));
+    add_exit(dirs[loop], query_exit(dirs[loop]), (: go_west :));
 }
 
 void create() {

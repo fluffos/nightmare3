@@ -30,7 +30,7 @@ void create() {
 
 
 int __list() {
-  string *file, *cost, *info;
+  string *file, *info;
   int count, penalty;
 
   if (!penalty = __discriminate()) return 1;

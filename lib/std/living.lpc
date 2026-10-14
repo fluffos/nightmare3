@@ -37,7 +37,7 @@ void set_alignment(int x);
 void add_alignment(int x);
 void adj_alignment(int x);
 void adjust_biorhythms();
-void set_invis();
+varargs void set_invis();
 string query_client();
 int query_physical();
 int query_outlaw();
@@ -132,7 +132,6 @@ nomask private int cmd_hook(string cmd) {
 }
 
 int force_me(string cmd) {
-  string tmp;
   int res;
 
   if (creatorp(this_object()) && !((int)master()->valid_apply(({ query_name() }))))

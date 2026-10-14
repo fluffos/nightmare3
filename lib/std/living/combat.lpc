@@ -143,7 +143,6 @@ void set_attackers(object *what) {
 //  Here is where we see if we are dead or in combat
 
 void continue_attack() {
-  string attack_limb, lost_limb;
   string *nin;
   object *death;
   int n, xxx;
@@ -319,11 +318,9 @@ string query_wimpydir() { return wimpydir; }
 int query_wimpy() { return wimpy; }
 
 int get_damage(object weap) {
-  int damage, melee, attack, two_handed, double_wielding, use;
+  int damage, melee, attack, double_wielding, use;
   int weap_class;
-  int x, y, i, j;
   mixed f;
-  object ob;
 
   attack = query_skill("attack");
   if (!weap) {

@@ -13,6 +13,8 @@
 #define TMP_FILE DIR_TMP + "/" + (string)previous_object()->query_name() + ".change"
 
 inherit DAEMON;
+void abort();
+void post_change(mixed *args);
 
 int cmd_changelog(string str) {
   string *tmp;
@@ -31,7 +33,7 @@ int cmd_changelog(string str) {
   str += CHANGELOG;
   message("system", "Logging changes to " + str + "...", this_player());
   this_player()->edit(TMP_FILE,
-    (: "post_change" :), (: "abort" :), ({ file, str }));
+    (: post_change :), (: abort :), ({ file, str }));
   return 1;
 }
 

@@ -43,7 +43,7 @@ void set_open(int state) { __Open = state; }
 
 int query_open() { return __Open; }
 
-nosave varargs int open(string with) {
+protected varargs int open(string with) {
   if (__Open)
     write("You open the " + query_short() + ".\n");
   say(this_player()->query_cap_name() + " opens the " + query_short() + ".\n");
@@ -65,7 +65,7 @@ nosave varargs int open(string with) {
   return 1;
 }
 
-nosave int close() {
+protected int close() {
   if (!__Open)
 
 
@@ -77,7 +77,7 @@ nosave int close() {
   return 1;
 }
 
-nosave int lock(string with) {
+protected int lock(string with) {
   if (__Locked)
     return (void)notify_fail("It's already closed, ninny!\n");
 
@@ -90,7 +90,7 @@ nosave int lock(string with) {
   return 1;
 }
 
-nosave int unlock(string with) {
+protected int unlock(string with) {
   if (!__Locked)
     return (void)notify_fail("It's already unlocked.\n");
   if (__KeyID != with)
@@ -104,7 +104,7 @@ nosave int unlock(string with) {
 }
 
 
-nosave int A_open(string arg)
+protected int A_open(string arg)
 
 {
   string key;
@@ -122,14 +122,14 @@ nosave int A_open(string arg)
   return open();
 }
 
-nosave int A_close(string arg) {
+protected int A_close(string arg) {
   if (!id(arg))
     return 0;
 
   return close();
 }
 
-nosave int A_lock(string arg) {
+protected int A_lock(string arg) {
   string key;
 
   if (sscanf(arg, "%s with %s", arg, key) != 2)
@@ -141,7 +141,7 @@ nosave int A_lock(string arg) {
   return lock(key);
 }
 
-nosave int A_unlock(string arg) {
+protected int A_unlock(string arg) {
   string key;
 
   if (sscanf(arg, "%s with %s", arg, key) != 2)

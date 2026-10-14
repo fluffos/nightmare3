@@ -3,10 +3,10 @@
 inherit DAEMON;
 
 int cmd_boost(string str) {
-  string whom, limb, Class;
-  int amount, cost, healing, i, wisdom;
+  string Class;
+  int amount, cost, healing, wisdom;
   object ob;
-  string *limbs, thing, what;
+  string thing, what;
 
   if (!str) {
     notify_fail("Boost whom?\n");

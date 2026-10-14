@@ -10,6 +10,7 @@
 #define SEC_TO_EXP  3
 
 inherit "/std/room";
+int leave_the_room();
 
 #define OLD_LANGUAGES ({ "elvish", "giantish", "orcish", "artrellian", "mischief", "sensuous", "hobbitish", "pseudo-speak", "gnomish" })
 
@@ -38,7 +39,7 @@ void create() {
       "The wisps of smoke remind you of the man's beard.",
       ({ "book", "books" }): "As you flip through the books you "
       "decide that you should study a new language." ]));
-  add_exit("south", "/domains/Praxis/w_boc_la2", (: "leave_the_room" :));
+  add_exit("south", "/domains/Praxis/w_boc_la2", (: leave_the_room :));
 }
 
 void init() {

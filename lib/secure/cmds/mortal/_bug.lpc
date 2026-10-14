@@ -14,6 +14,7 @@ int cmd_bug(string text);
 int report(string *lines);
 void end_text();
 void abort();
+int end_edit();
 string file;
 
 
@@ -27,7 +28,7 @@ int cmd_bug(string text) {
     rm(DIR_TMP + "/" + (string)this_player()->query_name() + ".bug");
     file = file_name(ob ? ob : environment(previous_object()));
     previous_object()->edit(DIR_TMP + "/" + (string)this_player()->query_name() + ".bug",
-      (: "end_edit" :), (: "abort" :));
+      (: end_edit :), (: abort :));
     return 1;
   }
   if (sscanf(text, "%s %s", str, new_text) == 2) {
@@ -43,7 +44,7 @@ int cmd_bug(string text) {
   return 1;
 }
 
-end_edit() {
+int end_edit() {
   string *lines;
   string tmpfile;
   tmpfile = file + ":\n" + read_file(DIR_TMP + "/" + (string)this_player()->query_name() + ".bug");

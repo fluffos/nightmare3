@@ -1,6 +1,7 @@
 #include <std.h>
 
 inherit ROOM;
+void shop_closing(string str);
 
 void create() {
   ::create();
@@ -19,7 +20,7 @@ void create() {
   set_exits(([ "south": "/domains/Praxis/e_boc_la2",
     "north": "/domains/Praxis/storage" ]));
   //set_pre_exit_functions( ({ "north" }), ({ "go_north" }) );
-  add_sky_event((: "shop_closing" :));
+  add_sky_event((: shop_closing :));
 }
 
 void reset() {

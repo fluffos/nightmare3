@@ -135,7 +135,6 @@ private void get_file(int fd, string file) {
   string *parts, *tmp;
   mixed str;
   string id, args;
-  int x;
 
   add_activity(fd, sprintf("GET %s (%s)\n", file, ctime(time())));
   file = (tmp = explode(file, " "))[0];

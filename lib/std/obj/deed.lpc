@@ -11,7 +11,7 @@
 
 inherit OBJECT;
 
-nosave private string __File, __Short, __Long, __Smell, __Listen;
+nosave private string __File, __DeedShort, __DeedLong, __Smell, __Listen;
 nosave private int __Indoors;
 
 void create() {
@@ -75,7 +75,7 @@ protected void get_short(string str) {
     input_to("get_short");
     return;
   }
-  __Short = str;
+  __DeedShort = str;
   message("system", "Now create a verbose description for the room.  "
     "This is what people will see when they type \"look\".", this_player());
   message("system", "You will enter an editor like when you mail to "
@@ -91,11 +91,11 @@ protected void get_long() {
 
   if (!(str = read_file("/tmp/" + this_player()->query_name() + ".build"))) {
     __Indoors = 0;
-    __Short = 0;
+    __DeedShort = 0;
     message("system", "Build aborted.", this_player());
     return;
   }
-  __Long = capitalize(replace_string(str, "\n", " "));
+  __DeedLong = capitalize(replace_string(str, "\n", " "));
   message("system", "If you want to have a general smell to the room, "
     "enter it here.  Just hit <return> if there is no general scent.",
     this_player());
@@ -119,8 +119,8 @@ protected void get_listen(string str) {
   if (file_size(sprintf("%s/%s", ESTATES_DIRS, geteuid(this_player()))) != -2)
     mkdir(sprintf("%s/%s", ESTATES_DIRS, geteuid(this_player())));
   write_file(__File, sprintf("set_property: $indoors;#%d\n", __Indoors));
-  write_file(__File, sprintf("set_short: $%s\n", __Short));
-  write_file(__File, sprintf("set_long: $%s\n", __Long));
+  write_file(__File, sprintf("set_short: $%s\n", __DeedShort));
+  write_file(__File, sprintf("set_long: $%s\n", __DeedLong));
   write_file(__File, sprintf("add_exit: $%s;$out\n",
     file_name(environment(this_player()))));
   if (__Smell) write_file(__File, sprintf("set_smell: $default;$%s", __Smell));

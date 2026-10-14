@@ -1,6 +1,7 @@
 #include <std.h>
 
 inherit ROOM;
+int go_east();
 
 void init() {
   ::init();
@@ -27,7 +28,7 @@ void create() {
       "passage": "You sense that only monks may pass that way." ]));
   set_exits(
     ([ "down": "/domains/Praxis/stairs" ]));
-  add_exit("east", "/domains/Praxis/monk_hall", (: "go_east" :));
+  add_exit("east", "/domains/Praxis/monk_hall", (: go_east :));
 }
 
 int preview() {

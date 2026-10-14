@@ -125,7 +125,7 @@ int check_alignment(object tp) {
 int do_add(object ob, string limb) {
   //rewritten by Gregon 01July1994 to process all types of limbs.
 
-  string fall_off, race, side, part;
+  string fall_off, side, part;
   int div;
 
   if (sscanf(limb, "%s %s", side, part) != 2) return 0;

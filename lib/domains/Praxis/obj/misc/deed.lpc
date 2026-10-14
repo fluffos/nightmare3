@@ -12,7 +12,7 @@
 inherit OBJECT;
 
 int __Light, __Indoors;
-string __Short, __Long, __Exit, __NewRoom, __EstateLong;
+string __DeedShort, __DeedLong, __Exit, __NewRoom, __EstateLong;
 
 private string create_file();
 
@@ -79,7 +79,7 @@ protected void input_long(string str) {
 }
 
 protected void input_short(string str) {
-  __Short = str;
+  __DeedShort = str;
   message("prompt", "Is the room 0) outdoors, or 1) indoors? ", this_player());
   input_to("input_indoors");
   return;
@@ -133,13 +133,13 @@ void done_edit(mixed *unused) {
     message("system", "No long!", this_player());
     return;
   }
-  __Long = replace_string(str, "\n", " ");
+  __DeedLong = replace_string(str, "\n", " ");
   __NewRoom = create_file();
   seteuid(UID_ESTATES);
   write_file(__NewRoom, "set_property: $indoors;#" + __Indoors + "\n");
   write_file(__NewRoom, "set_property: $light;#" + __Light + "\n");
-  write_file(__NewRoom, "set_short: $" + __Short + "\n");
-  write_file(__NewRoom, "set_long: $" + __Long + "\n");
+  write_file(__NewRoom, "set_short: $" + __DeedShort + "\n");
+  write_file(__NewRoom, "set_long: $" + __DeedLong + "\n");
   write_file(__NewRoom, "add_exit: " + __Exit + "\n");
   ESTATES_D->add_estate((string)this_player()->query_CapName(), __NewRoom,
     file_name(environment(this_player())), __EstateLong);

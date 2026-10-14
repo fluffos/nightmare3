@@ -4,10 +4,10 @@
 inherit DAEMON;
 
 int cmd_peer(string str) {
-  string *dirlist, *destlist;
-  string ret, tmp, l, dest;
+  string *dirlist;
+  string ret, tmp, dest;
   object who;
-  int i, x;
+  int x;
 
   if (!str) {
     message("my_action", "You peer around the room.", this_player());

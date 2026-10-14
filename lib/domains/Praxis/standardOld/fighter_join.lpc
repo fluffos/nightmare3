@@ -1,6 +1,7 @@
 #include <std.h>
 
 inherit ROOM;
+int go_up();
 
 void init() {
   ::init();
@@ -36,7 +37,7 @@ void create() {
       ({ "warriors", "young warriors" }): "They look clueless." ]));
   set_exits(
     ([ "southeast": "/domains/Praxis/s_centre4" ]));
-  add_exit("up", "/domains/Praxis/fighter_hall", (: "go_up" :));
+  add_exit("up", "/domains/Praxis/fighter_hall", (: go_up :));
   set_listen_string("default", "Fighters are yelling and screaming and "
     "being generally obnoxiously loud.");
 }

@@ -6,6 +6,7 @@
 
 #include <dirs.h>
 #include "editor.h"
+nomask void return_to_edit();
 
 #define EDITOR_HELP DIR_USER_HELP + "/editor"
 nosave private int __Time;
@@ -65,7 +66,7 @@ nomask private void enter_line(string str) {
   if (strlen(str) == 2 && str[0] == (query_escape())[0]) {
     switch (str[1]) {
       case 'h':
-        this_object()->more(EDITOR_HELP, "help", (: "return_to_edit" :));
+        this_object()->more(EDITOR_HELP, "help", (: return_to_edit :));
         return;
       case 'e': ed(__FileName, "end_edit", !creatorp(this_object())); return;
       case 'q':

@@ -10,6 +10,8 @@
 #include <dirs.h>
 
 inherit ROOM;
+string la_jail(string arg);
+int prevent_down();
 
 object *__Prisoners;
 mapping Executions;
@@ -45,7 +47,7 @@ void create() {
     ({ "building", "office", "room" }): "A wooden building constructed "
     "long ago for a lawless era.  There is a jail cell in one area.",
     "area": "A jail cell.",
-    ({ "cell", "jail cell", "jail" }): (: "la_jail" :),
+    ({ "cell", "jail cell", "jail" }): (: la_jail :),
     "exits": "Boc La Road and Centre Path." ]));
   set_smell("default", "You can smell the residue of sweaty outlaws.");
   set_exits(([ "south": "/" + __DIR__ + "yard",
@@ -175,7 +177,6 @@ void hanging_part_two(object who) {
 }
 
 void hanging_part_three(object who) {
-  int x, y;
   object *obs;
 
   message("say", "\n%^RED%^The two guards securely grasp your "
@@ -276,8 +277,7 @@ string death_by_firing_squad(object who) {
 }
 
 void squad_part_two(object who) {
-  object pole, *obs;
-  int x;
+  object pole;
 
   message("say", "\n%^RED%^%^BOLD%^The guard tells you:%^RESET%^ Your "
     "time has come.", who);
@@ -515,7 +515,7 @@ void pit_part_two(object who) {
   (DIR_STANDARD_DOMAIN + "/square")->set_property("no bump", 1);
   orig_long = (DIR_STANDARD_DOMAIN + "/square")->query_long();
   (DIR_STANDARD_DOMAIN + "/square")->add_exit("down",
-    DIR_STANDARD_DOMAIN + "/spider_pit", (: "prevent_down" :));
+    DIR_STANDARD_DOMAIN + "/spider_pit", (: prevent_down :));
   (DIR_STANDARD_DOMAIN + "/square")->set_long(
     orig_long + "\n\nA large, deep pit has been uncovered in "
     "the middle of the square.");

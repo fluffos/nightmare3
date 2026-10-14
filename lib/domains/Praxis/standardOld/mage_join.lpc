@@ -1,6 +1,7 @@
 #include <std.h>
 
 inherit ROOM;
+int go_down();
 
 void init() {
   ::init();
@@ -38,7 +39,7 @@ void create() {
       "torches": "They create an eerie glow to the room." ]));
   set_exits(
     ([ "out": "/domains/Praxis/west_road3" ]));
-  add_exit("down", "/domains/Praxis/mage_hall.lpc", (: "go_down" :));
+  add_exit("down", "/domains/Praxis/mage_hall.lpc", (: go_down :));
 }
 
 int preview() {

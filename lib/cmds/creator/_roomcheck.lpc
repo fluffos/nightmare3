@@ -21,7 +21,6 @@ int check_room(object ob) {
   string message;
   string *items;
   string desc;
-  string func;
 
   error = 0;
 

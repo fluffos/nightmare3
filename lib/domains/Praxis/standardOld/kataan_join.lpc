@@ -1,6 +1,7 @@
 #include <std.h>
 
 inherit ROOM;
+int go_down();
 
 void init() {
   ::init();
@@ -30,7 +31,7 @@ void create() {
       "cavern": "The cavern almost pulses with hidden evil." ]));
   set_exits(
     ([ "up": "/domains/Praxis/forest3" ]));
-  add_exit("down", "/domains/Praxis/kataan_hall", (: "go_down" :));
+  add_exit("down", "/domains/Praxis/kataan_hall", (: go_down :));
 }
 
 int preview() {
