@@ -14,7 +14,8 @@ int cmd_currency(string arg) {
   object *who;
   string *money;
   string str;
-  int i, x, j, y, z;
+  int i, x, j, y;
+  float z;   // currency_rate() is a float
 
   if (arg) i = sizeof(who = ({ find_player(convert_name(arg)) }));
   else i = sizeof(who = users());
@@ -31,8 +32,8 @@ int cmd_currency(string arg) {
     }
     while (j--) {
       z = currency_rate(money[j]);
-      if (z) x += (y = (int)who[i]->query_money(money[j])) / z;
-      tmp += sprintf("%:-15s: %d (%d base)\n", money[j], y, (z ? y / z : 0));
+      if (z) x += to_int((y = (int)who[i]->query_money(money[j])) / z);
+      tmp += sprintf("%:-15s: %d (%d base)\n", money[j], y, (z ? to_int(y / z) : 0));
     }
     if (who[i]) str += sprintf("%:-20s\n%:-15s %d\n%s\n",
       (string)who[i]->query_CapName(), "BASE", x, tmp);
@@ -44,7 +45,7 @@ int cmd_currency(string arg) {
     while (j--) {
       if (money[j] == "base") continue;
       z = currency_rate(money[j]);
-      if (z) y = borg[money[j]] / z;
+      if (z) y = to_int(borg[money[j]] / z);
       else y = 0;
       str += sprintf("%:-15s: %d (%d base)\n", money[j], borg[money[j]], y);
     }
