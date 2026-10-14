@@ -1,4 +1,5 @@
 inherit "/std/room";
+int do_check();
 
 void create() {
   object ob;
@@ -11,7 +12,7 @@ void create() {
   set_exits(
     ([ "west": "/domains/Praxis/adv_inner",
     ]));
-  add_exit("up", "/domains/Praxis/arch", (: "do_check" :));
+  add_exit("up", "/domains/Praxis/arch", (: do_check :));
   ob = new("/std/bboard");
   ob->set_name("board");
   ob->set_id(({ "board", "planning board" }));

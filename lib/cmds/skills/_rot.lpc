@@ -6,7 +6,7 @@ void send_messages(object tp, object ob, string Class, string limb);
 
 int cmd_rot(string str) {
   string whom, limb, Class;
-  int amount, cost, healing, i, wisdom;
+  int amount, cost, healing, i;
   object tp, ob;
   string *limbs, *weakness, *strengths;
 

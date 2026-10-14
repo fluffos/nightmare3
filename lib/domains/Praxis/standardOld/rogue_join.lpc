@@ -1,4 +1,5 @@
 inherit "std/room";
+int go_down();
 
 void init() {
   ::init();
@@ -30,7 +31,7 @@ void create() {
       "new rogues." ]));
   set_exits(
     ([ "out": "/domains/Jungle/Outlands/hideout" ]));
-  add_exit("down", "/domains/Praxis/rogue_hall", (: "go_down" :));
+  add_exit("down", "/domains/Praxis/rogue_hall", (: go_down :));
 }
 
 int preview() {

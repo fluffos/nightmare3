@@ -299,7 +299,7 @@ int __Cost(string str) {
   val = convert(val);
   if (!__Costs[tmp]) __Costs[tmp] = ([]);
   __Costs[tmp][ob] = val;
-  if (cn == "Someone") cn == "Invisible person";
+  if (cn == "Someone") cn = "Invisible person";
   __Speak(cn + ", I will take " + val + " " +
     __Eco["currency"] + " for it.");
   return 1;
@@ -324,7 +324,6 @@ int filter_list(object ob, string str) {
 protected int __SellAll() {
   object *inv;
   int i, worth, val, total;
-  string tmp;
 
   total = 0;
   if (!(i = sizeof(inv = all_inventory(this_player())))) {
@@ -368,7 +367,7 @@ protected int __SellAll() {
 }
 
 protected int cost_bargaining(object who, int x) {
-  int val, vend, pl, cha;
+  int val, pl, cha;
 
   pl = (int)who->query_skill("bargaining");
   cha = (int)who->query_stats("bargaining");
@@ -398,7 +397,6 @@ protected int __AlreadyThere(object ob) {
 
 protected int __CheckDiscrimination() {
   int x, tmp, i;
-  string *dis;
 
   if (__Discriminate["class"] &&
     member_array((string)this_player()->query_class(),
@@ -433,7 +431,6 @@ protected int convert(int x) {
 }
 
 varargs void set_currency(string str, float wert) {
-  int x;
 
   __Eco["currency"] = str;
   __Eco["exchange rate"] = currency_rate(str);

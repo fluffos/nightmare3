@@ -10,7 +10,6 @@ inherit DAEMON;
 int cmd_order(string str) {
   string who, what;
   object corpse, me;
-  int sp;
 
   if (!str) return notify_fail("Order whom to do what?\n");
 

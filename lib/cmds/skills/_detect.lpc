@@ -11,7 +11,7 @@ int check_alignment(object tp, string Class);
 int cmd_detect(string str) {
   object tp, ob;
   string prop, thing;
-  int which, faith;
+  int faith;
 
   tp = this_player();
   if (tp->query_ghost()) {

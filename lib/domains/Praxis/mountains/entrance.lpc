@@ -1,6 +1,7 @@
 #include <std.h>
 
 inherit ROOM;
+int go_down();
 
 void create() {
   ::create();
@@ -26,7 +27,7 @@ void create() {
   set_exits(
     ([ "out": "/domains/Praxis/pass2",
       "northeast": "/realms/borgoneous/rooms/hall1" ]));
-  add_exit("down", "/domains/Praxis/mountains/tunnel1", (: "go_down" :));
+  add_exit("down", "/domains/Praxis/mountains/tunnel1", (: go_down :));
 }
 
 int go_down() {

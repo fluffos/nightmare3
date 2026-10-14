@@ -25,7 +25,7 @@ void create() {
 }
 
 int cmd_analyze(string str) {
-  string name, Class, align;
+  string Class, align;
   object ob, tp;
   int calc;
 

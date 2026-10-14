@@ -13,12 +13,12 @@ private int __SourceRequired, __Strength, __Fuel, __Fire, __FuelRequired;
 private int __DisableCommands, __DisableWeapon, __BurntValue;
 private string __CmdLight, __CmdExtinguish;
 nosave private int __Lit, __TimeStamp;
-nosave private mixed __PreventPut;
+nosave private mixed __LightPreventPut;
 nosave private function __LightFunction, __ExtinguishFunction;
 
 void create() {
   weapon::create();
-  weapon::set_prevent_put((: "check_lit" :));
+  weapon::set_prevent_put((: check_lit :));
   set_vendor_type("light");
   __SourceRequired = 1;
   __Fuel = 120;
@@ -136,10 +136,10 @@ int is_weapon() { return !__DisableWeapon; }
 void set_prevent_put(mixed val) {
   if (!stringp(val) && !functionp(val))
     error("Bad argument 1 to set_prevent_put().\n");
-  __PreventPut = val;
+  __LightPreventPut = val;
 }
 
-mixed query_prevent_put() { return __PreventPut; }
+mixed query_prevent_put() { return __LightPreventPut; }
 
 string query_short() {
   string str;
@@ -203,11 +203,11 @@ int check_lit(object ob) {
       query_short(), (string)previous_object()->query_short()), ob);
     return 0;
   }
-  if (stringp(__PreventPut)) {
-    message("my_action", __PreventPut, ob);
+  if (stringp(__LightPreventPut)) {
+    message("my_action", __LightPreventPut, ob);
     return 0;
-  } else if (functionp(__PreventPut)) {
-    return (* __PreventPut) (ob);
+  } else if (functionp(__LightPreventPut)) {
+    return (* __LightPreventPut) (ob);
   }
   return 1;
 }

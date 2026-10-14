@@ -1,6 +1,7 @@
 #include <std.h>
 
 inherit ROOM;
+int go_north();
 
 void create() {
   ::create();
@@ -16,7 +17,7 @@ void create() {
   set_exits(
     ([ "south": "/domains/Praxis/orc_valley/open",
       "north": "/domains/Praxis/orc_valley/treasure" ]));
-  add_exit("north", "/domains/Praxis/orc_valley/treasure", (: "go_north" :));
+  add_exit("north", "/domains/Praxis/orc_valley/treasure", (: go_north :));
 }
 
 void reset() {

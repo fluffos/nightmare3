@@ -3,10 +3,10 @@
 inherit DAEMON;
 
 int cmd_score(string str) {
-  string rank, foo, name, title, Class, race;
+  string name, title, Class, race;
   int sp, max_sp;
   int level, hp, max_hp, mp, max_mp, age;
-  int exp, next_exp;
+  int exp;
 
   if (this_player()->query_ghost()) {
     notify_fail("You cannot do that in an immaterial state.\n");

@@ -19,8 +19,8 @@ void create() {
 }
 
 private void load() {
-  string *dirs, *files;
-  int i, j, maxi, maxj;
+  string *dirs;
+  int i, maxi;
 
   __Links = "<HTML><HEAD><TITLE>SimulEfun Documentation Gateway</TITLE>"
     "<H1>Nightmare Mudlib 3.3 SimulEfuns</H1>\n";

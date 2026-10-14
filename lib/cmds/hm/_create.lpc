@@ -14,7 +14,7 @@ object do_weapon(int x);
 object do_armour(int x);
 
 int cmd_create(string str) {
-  int cost, can;
+  int can;
   object ob;
 
   if (!str) {

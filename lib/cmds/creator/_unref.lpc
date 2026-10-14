@@ -12,7 +12,6 @@ inherit REFS_D;
 #define SYNTAX "Syntax: unref <ref_name>\n"
 
 int cmd_unref(string a) {
-  mapping refs;
 
   if (!a) { notify_fail(SYNTAX); return 0; }
   if (undefinedp(get_ref(a))) {

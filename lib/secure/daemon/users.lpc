@@ -4,11 +4,12 @@
 #include <commands.h>
 #include "users.h"
 
-inherit DAEMON;
+// Not DAEMON as well: OB_USER already inherits clean_up.lpc, and a second copy through DAEMON
+// gave this object two __NoClean variables and four overlapping functions.  DAEMON added only
+// the guarded remove() and query_prevent_shadow() below.
 inherit OB_USER;
 
 void create() {
-  daemon::create();
   user::create();
 }
 
@@ -55,4 +56,10 @@ private void delete_user(string who) {
 
 void setup() {}
 
-int remove() { return daemon::remove(); }
+int remove() {
+  if (!((int)master()->valid_apply(({ "assist" })))) return 0;
+  destruct(this_object());
+  return !(this_object());
+}
+
+int query_prevent_shadow() { return 1; }

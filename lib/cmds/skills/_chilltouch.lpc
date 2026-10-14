@@ -9,9 +9,8 @@ inherit DAEMON;
 
 int cmd_chilltouch(string str) {
   object tp, ob;
-  int faith, wisdom, i, level;
-  string what, *strengths, *weaknesses;
-  object *inv;
+  int faith, wisdom;
+  string *strengths, *weaknesses;
 
   tp = this_player();
   tp->set_magic_round();

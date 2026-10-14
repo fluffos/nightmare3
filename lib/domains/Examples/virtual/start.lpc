@@ -6,6 +6,7 @@
 #include <std.h>
 
 inherit ROOM;
+int search_brush(string str);
 
 void create() {
   ::create();
@@ -55,7 +56,7 @@ void init() {
 
 void reset() {
   ::reset();
-  set_search("brush", (: "search_brush" :));
+  set_search("brush", (: search_brush :));
 }
 
 int search_brush(string str) {

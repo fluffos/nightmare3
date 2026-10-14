@@ -173,7 +173,6 @@ void cmd_help(string topic, string category, int menu) {
 
 protected int find_help(string topic, string category, int menu) {
   object ob;
-  string str;
   mixed tmp;
 
   switch (category) {
@@ -262,7 +261,7 @@ protected int find_help(string topic, string category, int menu) {
       message("prompt", "\nHit <return> to continue: ", this_player());
       input_to("menu_return", category);
     }
-  } else this_player()->more(tmp, "help", (menu ? (: "endmore" :) : 0),
+  } else this_player()->more(tmp, "help", (menu ? (: endmore :) : 0),
     (menu ? category : 0));
   return 1;
 }

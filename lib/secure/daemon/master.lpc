@@ -316,7 +316,7 @@ private void crash(string err) {
 }
 
 int valid_seteuid(object ob, string id) {
-  string fn, uid;
+  string uid;
 
   return 1;
   if ((uid = getuid(ob)) == id) return 1;
@@ -358,7 +358,7 @@ int valid_socket(object ob, string fun, mixed *info) {
 int valid_function(function f) { return 1; }
 
 string get_wiz_name(string file) {
-  string nom, dir, tmp;
+  string nom, tmp;
 
   if (file[0] != '/') file = "/" + file;
   if (sscanf(file, REALMS_DIRS + "/%s/%s", nom, tmp) == 2) return nom;
@@ -369,7 +369,7 @@ string get_wiz_name(string file) {
 
 mixed apply_unguarded(function f) {
   object previous_unguarded;
-  string base, err, tmp;
+  string err;
   mixed val;
 
   if (base_name(previous_object(0)) != OB_SIMUL_EFUN) {
@@ -404,7 +404,7 @@ string error_handler(mapping mp, int caught) {
 }
 
 void log_error(string file, string msg) {
-  string nom, home;
+  string nom;
 
   if (this_player(1) && (find_object(OB_SIMUL_EFUN) && creatorp(this_player(1))))
     message("error", msg, this_player(1));
@@ -413,7 +413,7 @@ void log_error(string file, string msg) {
 }
 
 varargs string standard_trace(mapping mp, int flag) {
-  string obj, ret;
+  string ret;
   mapping *trace;
   int i, n;
 
@@ -527,7 +527,6 @@ int save_ed_setup(object who, int code) {
 
 int retrieve_ed_setup(object who) {
   string file;
-  int x;
 
   file = user_path((string)who->query_name()) + ".edrc";
   if (!file_exists(file)) return 0;

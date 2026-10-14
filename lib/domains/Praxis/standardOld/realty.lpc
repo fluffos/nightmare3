@@ -11,6 +11,7 @@
 #define ORDER_COST 17000
 
 inherit ROOM;
+string at_desk(string str);
 
 void create() {
   room::create();
@@ -23,7 +24,7 @@ void create() {
     "up in all kinds of dreary colours, with a desk at the far end of the "
     "office being the spot where all business is done."
   );
-  set_items(([ "colours": "Mostly puce.", "desk": (: "at_desk" :),
+  set_items(([ "colours": "Mostly puce.", "desk": (: at_desk :),
     "office": "A nice little space with a desk in it." ]));
   set_exits(([ "north": "/" + __DIR__ + "unnamed1" ]));
 }

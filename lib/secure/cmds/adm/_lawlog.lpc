@@ -19,9 +19,7 @@ void post_change(mixed *args);
 void abort();
 
 int cmd_lawlog(string str) {
-  string *tmp;
   string who;
-  int i;
 
   if (!str)
     return notify_fail("Correct syntax: lawlog [ha] player\n");

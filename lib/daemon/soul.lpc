@@ -133,7 +133,6 @@ int do_cmd(string verb, string arg) {
 }
 
 void become_emotional(mapping info, string adj, object *who) {
-  string cmd;
   int i;
 
   __Adj = adj;
@@ -254,7 +253,6 @@ private mixed parse_chunk() {
 
 private mapping parse_mapping() {
   mapping borg;
-  int i;
 
   borg = ([]);
   if (!sscanf(__Chunk, "*(%s", __Chunk))

@@ -18,7 +18,7 @@ private string query_time();
 int cmd_people(string str) {
   object *who, *display;
   string *args;
-  string msg, tmp;
+  string msg;
   int i, maxi, aflag, bflag, cflag, eflag, gflag, hflag, lflag, mflag;
   int nflag, pflag, rflag, sflag, uflag;
 

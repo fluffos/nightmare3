@@ -33,7 +33,7 @@ int cmd_who(string str) {
 
 string list_users(string *races, string order) {
   object *who, *hms, *ims, *nbs, *nrs, *abs;
-  string tmp, mark, borg;
+  string tmp, borg;
   int i, max, x;
   hms = ({});
   ims = ({});

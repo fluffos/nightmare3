@@ -6,6 +6,7 @@
 #include <std.h>
 
 inherit MONSTER;
+int death_func();
 
 create() {
   ::create();
@@ -41,7 +42,7 @@ create() {
   set_body_type("insectoid");
   set_spells(({ "poison" }));
   set_aggressive(999999);
-  set_die((: "death_func" :));
+  set_die((: death_func :));
 }
 
 int death_func() {

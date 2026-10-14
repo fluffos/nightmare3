@@ -114,7 +114,6 @@ string query_class() { return str_class; }
 
 protected void reduce_skills() {
   string *ind;
-  int x;
   int i;
 
   ind = keys(skills);

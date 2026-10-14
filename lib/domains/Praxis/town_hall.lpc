@@ -9,6 +9,8 @@
 #define COUNCIL_CHAMBER "/domains/Praxis/council"
 
 inherit ROOM;
+string listen_council(string arg);
+int pre_exit_up();
 
 object *listeners = ({});
 
@@ -36,7 +38,7 @@ void create() {
     "north": "/domains/Praxis/e_boc_la1",
     "south": "/domains/Praxis/court_room",
   ]));
-  add_exit("up", "/domains/Praxis/council", (: "pre_exit_up" :));
+  add_exit("up", "/domains/Praxis/council", (: pre_exit_up :));
   set_items(([
     "hall": "It is five times the height of a tall man.",
     "roof": "If you \"listen to council\", perhaps you will hear them.",
@@ -49,7 +51,7 @@ void create() {
     "gargoyles": "They look innocently inanimate.",
     "gargoyle": "It is impenetrateable as a stone wall.",
   ]));
-  set_listen("council", (: "listen_council" :));
+  set_listen("council", (: listen_council :));
 }
 
 int pre_exit_up() {
